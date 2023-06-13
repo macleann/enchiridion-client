@@ -11,10 +11,10 @@ export const NavBar = () => {
         <Link to="/">Home</Link>
       </li>
       <li className="p-3 font-bold hover:underline decoration-wavy">
-        <Link to="/all-playlists">All Playlists</Link>
+        <Link to="/playlists">All Playlists</Link>
       </li>
       <li className="p-3 font-bold hover:underline decoration-wavy">
-        <Link to="/my-playlists">My Playlists</Link>
+        <Link to="/playlists/my-playlists">My Playlists</Link>
       </li>
       <li className="p-3 font-bold hover:underline decoration-wavy">
         <Link to="/seasons">Seasons</Link>
