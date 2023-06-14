@@ -32,7 +32,7 @@ export const SeasonDetail = () => {
                     <div key={`episode--${episode.id}`} className="flex justify-center">
                         <div className="w-1/2 justify-end pr-4 pl-8"><img src={`${episodeimgURL}${episode.still_path}`}/></div>
                         <div className="w-1/2 justify-start pl-4 pr-8">
-                            <Link to={`/episodes/${episode.episode_number}`}>
+                            <Link to={`episodes/${episode.episode_number}`}>
                                 <h3 className="text-2xl">{episode.name}</h3>
                             </Link>
                             <p>{episode.overview}</p>

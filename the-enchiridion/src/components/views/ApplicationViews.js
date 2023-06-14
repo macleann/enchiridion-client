@@ -3,6 +3,7 @@ import { Home } from "../home/Home";
 import { Playlists } from "../playlists/Playlists";
 import { Seasons } from "../seasons/Seasons";
 import { SeasonDetail } from "../seasons/SeasonDetail";
+import { EpisodeDetail } from "../episodes/EpisodeDetail";
 
 export const ApplicationViews = () => {
     const localEnchiridionUser = localStorage.getItem("enchiridion_user");
@@ -15,8 +16,10 @@ export const ApplicationViews = () => {
           <Route path="/" element={<Home />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:section" element={<Playlists />} />
+          <Route path="/playlists/:playlistId/:episodeId" element={<EpisodeDetail />} />
           <Route path="/seasons" element={<Seasons />} />
           <Route path="/seasons/:seasonNumber" element={<SeasonDetail />} />
+          <Route path="/seasons/:seasonNumber/episodes/:episodeNumber" element={<EpisodeDetail />} />
         </Route>
       </Routes>
     </>
