@@ -21,6 +21,12 @@ export const Playlists = () => {
         }
     }, [filterToggle])
 
+    const createPlaylistButton = () => {
+        if (currentUser) {
+            return <button onClick={() => navigate("/playlists/create")}>Create Playlist</button>
+        }
+    }
+
     const myPlaylistsButton = () => {
         if (currentUser) {
             return <button onClick={(e) => {
@@ -41,7 +47,7 @@ export const Playlists = () => {
     return (
         <>
             <h1>Playlists</h1>
-            <button onClick={() => navigate("/playlists/create")}>Create Playlist</button>
+            {createPlaylistButton()}
             {myPlaylistsButton()}
             <ul>
                 {playlists.map(playlist => {
