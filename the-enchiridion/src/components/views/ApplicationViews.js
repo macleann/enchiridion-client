@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import { Home } from "../home/Home";
 import { Playlists } from "../playlists/Playlists";
+import { Seasons } from "../seasons/Seasons";
 
 export const ApplicationViews = () => {
     const localEnchiridionUser = localStorage.getItem("enchiridion_user");
@@ -13,6 +14,7 @@ export const ApplicationViews = () => {
           <Route path="/" element={<Home />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/:section" element={<Playlists />} />
+          <Route path="/seasons" element={<Seasons />} />
         </Route>
       </Routes>
     </>
