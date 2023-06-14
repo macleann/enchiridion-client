@@ -23,7 +23,7 @@ export const Seasons = () => {
             {seasons.map((season) => {
               return (
                 <div key={`season--${season.id}`} className="pop-out flex-col w-1/6 mx-2 my-5 border-2 border-none rounded-lg shadow-md p-4 backdrop-blur-sm cursor-pointer">
-                  <Link to={`season/${season.id}`}>
+                  <Link to={`${season.season_number}`}>
                     <div>
                         <img className="rounded-lg" src={`${imgURL}${season.poster_path}`} alt={season.name} />
                     </div>

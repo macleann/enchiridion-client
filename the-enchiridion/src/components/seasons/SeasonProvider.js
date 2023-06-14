@@ -10,8 +10,8 @@ export const SeasonProvider = (props) => {
         return fetch(`${url}/seasons`).then((res) => res.json());
     }
 
-    const getSeasonById = (id) => {
-        return fetch(`${url}/seasons/${id}`).then((res) => res.json());
+    const getSeasonById = (season_number) => {
+        return fetch(`${url}/seasons/${season_number}`).then((res) => res.json());
     }
 
     return (
