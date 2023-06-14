@@ -19,7 +19,8 @@ export const Login = () => {
         localStorage.setItem(
           "enchiridion_user",
           JSON.stringify({
-            token: user.token
+            token: user.token,
+            id: user.id,
           })
         );
 

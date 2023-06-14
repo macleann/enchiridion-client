@@ -20,6 +20,7 @@ export const ApplicationViews = () => {
           <Route path="/playlists/:playlistId" element={<PlaylistDetail />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlists/create" element={<PlaylistForm />} />
+          <Route path="/playlists/:playlistId/edit" element={<PlaylistForm />} />
           <Route path="/seasons/:seasonNumber/episodes/:episodeNumber" element={<EpisodeDetail />} />
           <Route path="/seasons/:seasonNumber" element={<SeasonDetail />} />
           <Route path="/seasons" element={<Seasons />} />

@@ -27,6 +27,7 @@ export const Register = () => {
           "enchiridion_user",
           JSON.stringify({
             token: createdUser.token,
+            id: createdUser.id,
           })
         );
 
