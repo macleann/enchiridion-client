@@ -4,17 +4,34 @@ import { PlaylistContext } from './PlaylistProvider';
 
 export const Playlists = () => {
     const { playlists, setPlaylists, getAllPlaylists, getUserPlaylists } = useContext(PlaylistContext)
-    const { section } = useParams()
     const [isLoading, setIsLoading] = useState(true)
+    const [filterToggle, setFilterToggle] = useState(false)
     const navigate = useNavigate()
+    const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"))
 
     useEffect(() => {
-        if (section === "my-playlists") {
+        getAllPlaylists().then((res) => setPlaylists(res)).then(() => setIsLoading(false))
+    }, [])
+
+    useEffect(() => {
+        if (filterToggle) {
             getUserPlaylists().then((res) => setPlaylists(res)).then(() => setIsLoading(false))
         } else {
             getAllPlaylists().then((res) => setPlaylists(res)).then(() => setIsLoading(false))
         }
-    }, [section])
+    }, [filterToggle])
+
+    const myPlaylistsButton = () => {
+        if (currentUser) {
+            return <button onClick={(e) => {
+                e.preventDefault()
+                setIsLoading(true)
+                setFilterToggle(!filterToggle)
+            }}>
+                {filterToggle ? "All Playlists" : "My Playlists"}
+            </button>
+        }
+    }
 
     if (isLoading) {
         return <h1>Loading...</h1>
@@ -25,6 +42,7 @@ export const Playlists = () => {
         <>
             <h1>Playlists</h1>
             <button onClick={() => navigate("/playlists/create")}>Create Playlist</button>
+            {myPlaylistsButton()}
             <ul>
                 {playlists.map(playlist => {
                     return <li key={playlist.id}><Link to={`/playlists/${playlist.id}`}>{playlist.name}</Link></li>
