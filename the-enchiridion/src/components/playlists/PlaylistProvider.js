@@ -22,9 +22,13 @@ export const PlaylistProvider = (props) => {
         }).then(res => res.json())
     }
 
+    const getPlaylistById = (id) => {
+        return fetch(`${url}/playlists/${id}`).then(res => res.json())
+    }
+
     return (
         <PlaylistContext.Provider value={{
-            playlists, setPlaylists, getAllPlaylists, getUserPlaylists
+            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById
         }}>
             {props.children}
         </PlaylistContext.Provider>

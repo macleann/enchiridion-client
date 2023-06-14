@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import { Home } from "../home/Home";
 import { Playlists } from "../playlists/Playlists";
+import { PlaylistDetail } from "../playlists/PlaylistDetail";
 import { Seasons } from "../seasons/Seasons";
 import { SeasonDetail } from "../seasons/SeasonDetail";
 import { EpisodeDetail } from "../episodes/EpisodeDetail";
@@ -14,12 +15,12 @@ export const ApplicationViews = () => {
       <Routes>
         <Route path="/" element={<Outlet />}>
           <Route path="/" element={<Home />} />
-          <Route path="/playlists" element={<Playlists />} />
-          <Route path="/playlists/:section" element={<Playlists />} />
           <Route path="/playlists/:playlistId/:episodeId" element={<EpisodeDetail />} />
-          <Route path="/seasons" element={<Seasons />} />
-          <Route path="/seasons/:seasonNumber" element={<SeasonDetail />} />
+          <Route path="/playlists/:playlistId" element={<PlaylistDetail />} />
+          <Route path="/playlists" element={<Playlists />} />
           <Route path="/seasons/:seasonNumber/episodes/:episodeNumber" element={<EpisodeDetail />} />
+          <Route path="/seasons/:seasonNumber" element={<SeasonDetail />} />
+          <Route path="/seasons" element={<Seasons />} />
         </Route>
       </Routes>
     </>
