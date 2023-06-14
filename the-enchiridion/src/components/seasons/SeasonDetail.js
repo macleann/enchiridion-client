@@ -3,15 +3,15 @@ import { Link, useParams } from "react-router-dom"
 import { SeasonContext } from "./SeasonProvider"
 
 export const SeasonDetail = () => {
-    const { seasonId } = useParams()
-    const { getSeasonById } = useContext(SeasonContext)
+    const { seasonNumber } = useParams()
+    const { getSeasonBySeasonNumber } = useContext(SeasonContext)
     const [season, setSeason] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const seasonimgURL = "https://www.themoviedb.org/t/p/w260_and_h390_bestv2"
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
-        getSeasonById(seasonId).then((res) => setSeason(res)).then(() => setIsLoading(false))
+        getSeasonBySeasonNumber(seasonNumber).then((res) => setSeason(res)).then(() => setIsLoading(false))
     }, [])
 
     if (isLoading) {
