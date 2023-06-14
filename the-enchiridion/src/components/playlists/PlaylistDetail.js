@@ -4,7 +4,7 @@ import { PlaylistContext } from "./PlaylistProvider";
 
 export const PlaylistDetail = () => {
     const { playlistId } = useParams();
-    const { getPlaylistById } = useContext(PlaylistContext);
+    const { getPlaylistById, deletePlaylist } = useContext(PlaylistContext);
     const [playlist, setPlaylist] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
@@ -12,7 +12,6 @@ export const PlaylistDetail = () => {
 
     useEffect(() => {
         getPlaylistById(playlistId).then((res) => setPlaylist(res)).then(() => setIsLoading(false));
-        console.log(playlist)
     }, []);
 
     const editPlaylistButton = () => {
@@ -21,6 +20,21 @@ export const PlaylistDetail = () => {
             return (
                 <button onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
                     Edit Playlist
+                </button>
+            );
+        }
+    };
+
+    const deletePlaylistButton = () => {
+        const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
+        if (playlist.user_id === currentUser.id) {
+            return (
+                <button
+                    onClick={() => {
+                        deletePlaylist(playlistId).then(() => navigate("/playlists"));
+                    }}
+                >
+                    Delete Playlist
                 </button>
             );
         }
@@ -39,6 +53,7 @@ export const PlaylistDetail = () => {
                 <div className="w-1/2 justify-start pl-4 pr-8">{playlist.description}</div>
             </div>
             {editPlaylistButton()}
+            {deletePlaylistButton()}
             <div>
                 {playlist.episodes.map((episode) => {
                 return (
