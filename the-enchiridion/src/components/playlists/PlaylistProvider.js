@@ -37,9 +37,20 @@ export const PlaylistProvider = (props) => {
         }).then(res => res.json())
     }
 
+    const updatePlaylist = (playlist) => {
+        return fetch(`${url}/user-playlists/${playlist.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${currentUser.token}`
+            },
+            body: JSON.stringify(playlist)
+        }).then(res => res.json())
+    }
+
     return (
         <PlaylistContext.Provider value={{
-            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist
+            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist, updatePlaylist
         }}>
             {props.children}
         </PlaylistContext.Provider>

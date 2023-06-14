@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { PlaylistContext } from "./PlaylistProvider"
 import { SeasonContext } from "../seasons/SeasonProvider"
 
@@ -9,8 +9,9 @@ export const PlaylistForm = () => {
         description: "This is a test",
         episodes: []
     })
-    const { createPlaylist } = useContext(PlaylistContext)
+    const { getPlaylistById, createPlaylist, updatePlaylist } = useContext(PlaylistContext)
     const { seasons, setSeasons, getAllSeasons, getSeasonBySeasonNumber } = useContext(SeasonContext)
+    const { playlistId } = useParams()
     const [season, setSeason] = useState({
         id: 0,
         episodes: []
@@ -18,6 +19,7 @@ export const PlaylistForm = () => {
     const [seasonNumber, setSeasonNumber] = useState(null)
     const [episodes, setEpisodes] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         getAllSeasons()
@@ -25,6 +27,14 @@ export const PlaylistForm = () => {
             .then(() => setIsLoading(false))
     }
     , [])
+
+    useEffect(() => {
+        if (playlistId) {
+            getPlaylistById(playlistId)
+                .then((res) => setPlaylist(res))
+        }
+    }
+    , [playlistId])
 
     useEffect(() => {
         console.log(seasonNumber)
@@ -60,15 +70,17 @@ export const PlaylistForm = () => {
 
     const handleSavePlaylist = (event) => {
         event.preventDefault()
-        setIsLoading(true)
-        createPlaylist(playlist).then(() => {
-            setPlaylist({
-                name: "",
-                description: "",
-                episodes: []
+        if (playlistId) {
+            // update
+            updatePlaylist(playlist).then(() => {
+                navigate(`/playlists/${playlistId}`)
             })
-            setIsLoading(false)
-        })
+        } else {
+            // create
+            createPlaylist(playlist).then(() => {
+                navigate("/playlists")
+            })
+        }
     }
 
     if (isLoading) {

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PlaylistContext } from "./PlaylistProvider";
 
 export const PlaylistDetail = () => {
@@ -8,10 +8,23 @@ export const PlaylistDetail = () => {
     const [playlist, setPlaylist] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
+    const navigate = useNavigate()
 
     useEffect(() => {
         getPlaylistById(playlistId).then((res) => setPlaylist(res)).then(() => setIsLoading(false));
+        console.log(playlist)
     }, []);
+
+    const editPlaylistButton = () => {
+        const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
+        if (playlist.user_id === currentUser.id) {
+            return (
+                <button onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
+                    Edit Playlist
+                </button>
+            );
+        }
+    };
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -25,6 +38,7 @@ export const PlaylistDetail = () => {
             <div className="flex justify-center">
                 <div className="w-1/2 justify-start pl-4 pr-8">{playlist.description}</div>
             </div>
+            {editPlaylistButton()}
             <div>
                 {playlist.episodes.map((episode) => {
                 return (
