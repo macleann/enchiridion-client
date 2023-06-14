@@ -48,9 +48,18 @@ export const PlaylistProvider = (props) => {
         }).then(res => res.json())
     }
 
+    const deletePlaylist = (id) => {
+        return fetch(`${url}/user-playlists/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${currentUser.token}`
+            }
+        })
+    }
+
     return (
         <PlaylistContext.Provider value={{
-            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist, updatePlaylist
+            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist
         }}>
             {props.children}
         </PlaylistContext.Provider>
