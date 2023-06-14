@@ -26,9 +26,20 @@ export const PlaylistProvider = (props) => {
         return fetch(`${url}/playlists/${id}`).then(res => res.json())
     }
 
+    const createPlaylist = (playlist) => {
+        return fetch(`${url}/user-playlists`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${currentUser.token}`
+            },
+            body: JSON.stringify(playlist)
+        }).then(res => res.json())
+    }
+
     return (
         <PlaylistContext.Provider value={{
-            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById
+            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist
         }}>
             {props.children}
         </PlaylistContext.Provider>
