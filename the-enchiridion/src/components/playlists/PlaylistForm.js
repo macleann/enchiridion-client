@@ -5,8 +5,8 @@ import { SeasonContext } from "../seasons/SeasonProvider"
 
 export const PlaylistForm = () => {
     const [playlist, setPlaylist] = useState({
-        name: "Test Playlist 2",
-        description: "This is a test",
+        name: "",
+        description: "",
         episodes: []
     })
     const { getPlaylistById, createPlaylist, updatePlaylist } = useContext(PlaylistContext)
@@ -37,12 +37,12 @@ export const PlaylistForm = () => {
     , [playlistId])
 
     useEffect(() => {
-        console.log(seasonNumber)
         if (seasonNumber !== null) {
             getSeasonBySeasonNumber(seasonNumber).then((res) => {
                 setSeason(res)
-                res.episodes.map(episode => episode.series_id = 15260)
-                setEpisodes(res.episodes)
+                const modifiedEpisodes = res.episodes
+                modifiedEpisodes.map(episode => episode.series_id = 15260)
+                setEpisodes(modifiedEpisodes)
             })
         }
     }, [seasonNumber])
@@ -88,7 +88,7 @@ export const PlaylistForm = () => {
     }
     return (
         <>
-            <h1>Create Playlist</h1>
+            <h1>{playlistId ? "Edit Playlist" : "Create Playlist"}</h1>
             <form>
                 <fieldset>
                     <label htmlFor="name">Name:</label>

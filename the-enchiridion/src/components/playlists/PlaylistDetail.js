@@ -16,7 +16,7 @@ export const PlaylistDetail = () => {
 
     const editPlaylistButton = () => {
         const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
-        if (playlist.user_id === currentUser.id) {
+        if (playlist.user_id === currentUser?.id) {
             return (
                 <button onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
                     Edit Playlist
@@ -27,7 +27,7 @@ export const PlaylistDetail = () => {
 
     const deletePlaylistButton = () => {
         const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
-        if (playlist.user_id === currentUser.id) {
+        if (playlist.user_id === currentUser?.id) {
             return (
                 <button
                     onClick={() => {
