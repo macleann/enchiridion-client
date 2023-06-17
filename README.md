@@ -26,7 +26,7 @@ Before you begin, ensure you have met the following requirements:
     ```
 2. Navigate into the project directory:
     ```
-    cd enchiridion-client
+    cd enchiridion-client/the-enchiridion
     ```
 3. Install project dependencies:
     ```
