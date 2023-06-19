@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PlaylistContext } from "./PlaylistProvider";
+import { Loading } from "../svgs/Loading.js";
 
 export const PlaylistDetail = () => {
     const { playlistId } = useParams();
@@ -18,7 +19,7 @@ export const PlaylistDetail = () => {
         const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
         if (playlist.user_id === currentUser?.id) {
             return (
-                <button onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
+                <button className="button-primary" onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
                     Edit Playlist
                 </button>
             );
@@ -30,6 +31,7 @@ export const PlaylistDetail = () => {
         if (playlist.user_id === currentUser?.id) {
             return (
                 <button
+                    className="button-delete"
                     onClick={() => {
                         deletePlaylist(playlistId).then(() => navigate("/playlists"));
                     }}
@@ -41,7 +43,7 @@ export const PlaylistDetail = () => {
     };
 
     if (isLoading) {
-        return <h1>Loading...</h1>;
+        return <Loading />;
     } else if (playlist.message) {
         console.log(playlist.message)
         return <h1>Playlist not found</h1>;
@@ -49,11 +51,11 @@ export const PlaylistDetail = () => {
     return (
         <>
             <h2 className="text-3xl text-center mb-6">{playlist.name}</h2>
-            <div className="flex justify-center">
-                <div className="w-1/2 justify-start pl-4 pr-8">{playlist.description}</div>
+            <div className="m-4 text-center text-gray-500">{playlist.description}</div>
+            <div className="flex justify-around m-4">
+                {editPlaylistButton()}
+                {deletePlaylistButton()}
             </div>
-            {editPlaylistButton()}
-            {deletePlaylistButton()}
             <div>
                 {playlist.episodes.map((episode) => {
                 return (
@@ -63,7 +65,7 @@ export const PlaylistDetail = () => {
                             <Link to={`${episode.id}`}>
                                 <h3 className="text-2xl">{episode.name}</h3>
                             </Link>
-                            <p>{episode.overview}</p>
+                            <p className="text-gray-500">{episode.overview}</p>
                         </div>
                     </div>
                 );

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EpisodeContext } from "./EpisodeProvider";
+import { Loading } from "../svgs/Loading.js";
 
 
 export const EpisodeDetail = () => {
@@ -18,7 +19,7 @@ export const EpisodeDetail = () => {
     }, []);
 
     if (isLoading) {
-        return <h1>Loading...</h1>;
+        return <Loading />;
     } else if (episode.error) {
         console.log(episode.error)
         return <h1>Episode not found</h1>;

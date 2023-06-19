@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
 export const Login = () => {
-  const [username, setUsername] = useState("mooglyg");
-  const [password, setPassword] = useState("password");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [focused, setFocused] = useState({ username: false, password: false });
   const { postUserForLogin } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ export const Login = () => {
               <input
                 type="text"
                 className="input-field"
-                placeholder="david@byrne.com"
+                placeholder="fmertens"
                 onChange={(evt) => setUsername(evt.target.value)}
                 onFocus={() => handleFocus("username", true)}
                 onBlur={(evt) => handleFocus("username", evt.target.value !== "")}
@@ -87,15 +87,15 @@ export const Login = () => {
                 Password
               </label>
             </div>
-            <button type="submit" className={`btn-primary ${
-              !username || !password ? "btn-primary-disabled" : ""
-            }`}
-            disabled={!username || !password}>
-              Sign in
-            </button>
-            <section>
-              <Link to="/register">Not a user yet?</Link>
-            </section>
+            <div className="flex justify-around items-center">
+              <button type="submit" className={!username || !password ? "button-primary-disabled mr-2" : "button-primary mr-2"}
+              disabled={!username || !password}>
+                Log in
+              </button>
+              <section className="ml-2">
+                <Link className="button-primary" to="/register">Not a user yet?</Link>
+              </section>
+            </div>
           </form>
         </section>
       </main>
