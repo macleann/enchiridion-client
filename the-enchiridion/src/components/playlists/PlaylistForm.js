@@ -80,6 +80,7 @@ export const PlaylistForm = () => {
 
   // Handle changes to playlist state from form inputs
   const handleControlledInputChange = (event) => {
+    event.preventDefault();
     const newPlaylist = { ...playlist };
     newPlaylist[event.target.id] = event.target.value;
     setPlaylist(newPlaylist);
@@ -87,6 +88,7 @@ export const PlaylistForm = () => {
 
   // Handle adding an episode to the playlist
   const handleAddEpisode = (event) => {
+    event.preventDefault();
     const newPlaylist = { ...playlist };
     const selectedEpisode = episodes.find(
       (episode) => episode.id === parseInt(event.target.value)
@@ -98,6 +100,7 @@ export const PlaylistForm = () => {
 
   // Handle removing an episode from playlist
   const handleRemoveEpisode = (event) => {
+    event.preventDefault();
     const newPlaylist = { ...playlist };
     const episodeIndex = newPlaylist.episodes.findIndex(
       (episode) => episode.id === parseInt(event.target.value)
