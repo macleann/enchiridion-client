@@ -74,7 +74,7 @@ export const Register = () => {
             type="text"
             id="firstName"
             className="input-field"
-            placeholder="David"
+            placeholder="Finn"
             onChange={updateNewUser}
             onFocus={() => handleFocus("firstName", true)}
             onBlur={(evt) => handleFocus("firstName", evt.target.value !== "")}
@@ -96,7 +96,7 @@ export const Register = () => {
             type="text"
             id="lastName"
             className="input-field"
-            placeholder="Byrne"
+            placeholder="Mertens"
             onChange={updateNewUser}
             onFocus={() => handleFocus("lastName", true)}
             onBlur={(evt) => handleFocus("lastName", evt.target.value !== "")}
@@ -118,7 +118,7 @@ export const Register = () => {
             type="username"
             id="username"
             className="input-field"
-            placeholder="dbyrne"
+            placeholder="fmertens"
             onChange={updateNewUser}
             onFocus={() => handleFocus("username", true)}
             onBlur={(evt) => handleFocus("username", evt.target.value !== "")}
@@ -139,7 +139,7 @@ export const Register = () => {
             type="email"
             id="email"
             className="input-field"
-            placeholder="david@byrne.com"
+            placeholder="finn@enchiridion.co"
             onChange={updateNewUser}
             onFocus={() => handleFocus("email", true)}
             onBlur={(evt) => handleFocus("email", evt.target.value !== "")}
@@ -177,8 +177,8 @@ export const Register = () => {
 
         <button
           type="submit"
-          className={`btn-primary ${
-            !user.username || !user.email || !user.firstName || !user.lastName || !user.password ? "btn-primary-disabled" : ""
+          className={`${
+            !user.username || !user.email || !user.firstName || !user.lastName || !user.password ? "button-primary-disabled" : "button-primary"
           }`}
           disabled={!user.username || !user.email || !user.firstName || !user.lastName || !user.password}
         >
