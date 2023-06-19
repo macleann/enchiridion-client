@@ -32,7 +32,7 @@ export const NavBar = () => {
       <div className={`${isOpen ? 'block' : 'hidden'} md:flex md:w-full md:justify-between`}>
         <div className="md:justify-start md:ml-4">
           <Link to="/playlists" onClick={handleClick} className="block mt-4 ml-2 md:inline-block md:mt-0 mr-6 font-bold">Playlists</Link>
-          <Link to="/seasons" onClick={handleClick} className="block mt-4 ml-2 md:inline-block md:mt-0 mr-6 font-bold">Seasons</Link>
+          <Link to="/search" onClick={handleClick} className="block mt-4 ml-2 md:inline-block md:mt-0 mr-6 font-bold">Search Shows</Link>
         </div>
         <div className="md:justify-end md:mr-4">
           {localStorage.getItem("enchiridion_user") ? (
