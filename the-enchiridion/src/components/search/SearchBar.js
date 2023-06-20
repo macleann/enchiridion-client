@@ -50,10 +50,8 @@ export const SearchBar = () => {
     return (
       <div className="flex items-center justify-center my-4 mx-4">
         <form className="flex flex-col w-full md:w-1/2">
-            <div className="w-full sticky top-0 z-10 bg-white dark:bg-gray-800">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <MagnifyingGlass />
-            </div>
+          <div className="w-full sticky top-0 z-10 bg-white dark:bg-gray-800">
+            <MagnifyingGlass />
             <input
               type="text"
               id="simple-search"
@@ -68,10 +66,18 @@ export const SearchBar = () => {
             <div className="flex flex-wrap justify-center items-start my-2">
               {searchResults.map((result) => {
                 return (
-                  <Link to={`/search/${result.id}`} key={result.id} className="card">
+                  <Link
+                    to={`/search/${result.id}`}
+                    key={result.id}
+                    className="card"
+                  >
                     {displayPoster(result)}
-                    <div className="text-center text-ellipsis md:text-xl">{result.name}</div>
-                    <div className="text-xs md:text-sm text-gray-500">{getAirDate(result)}</div>
+                    <div className="text-center text-ellipsis md:text-xl">
+                      {result.name}
+                    </div>
+                    <div className="text-xs md:text-sm text-gray-500">
+                      {getAirDate(result)}
+                    </div>
                   </Link>
                 );
               })}
