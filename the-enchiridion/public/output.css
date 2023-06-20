@@ -2233,6 +2233,11 @@ code {
     font-size: 1rem;
     line-height: 1.5rem;
   }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 
 @media (min-width: 1024px) {
