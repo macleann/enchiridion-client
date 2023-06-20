@@ -3,9 +3,7 @@ import { SeasonContext } from "./SeasonProvider";
 import { Link } from "react-router-dom";
 import { Loading } from "../svgs/Loading.js";
 
-export const Seasons = () => {
-  const { seasons, setSeasons, getAllSeasons } = useContext(SeasonContext);
-  const [isLoading, setIsLoading] = useState(true);
+export const Seasons = ({ seasons }) => {
   const smImgUrl = "https://www.themoviedb.org/t/p/w130_and_h195_bestv2";
   const lgImgUrl = "https://www.themoviedb.org/t/p/w260_and_h390_bestv2";
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
@@ -28,19 +26,7 @@ export const Seasons = () => {
     };
   }, [screenSize]);
 
-  useEffect(() => {
-    getAllSeasons()
-      .then((res) => setSeasons(res))
-      .then(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 200);
-      });
-  }, []);
-
-  if (isLoading) {
-    return <Loading />;
-  } else if (seasons.length === 0) {
+  if (seasons.length === 0) {
     return <h1>No seasons found</h1>;
   }
   return (
@@ -55,7 +41,7 @@ export const Seasons = () => {
           return (
             <div key={`season--${season.id}`} className="card">
               <Link
-                to={`${season.season_number}`}
+                to={`season/${season.season_number}`}
                 className="md:flex md:h-full w-full md:items-center"
               >
                 <div className="md:w-1/2">

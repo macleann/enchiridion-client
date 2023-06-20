@@ -4,7 +4,7 @@ import { SeasonContext } from "./SeasonProvider"
 import { Loading } from "../svgs/Loading.js";
 
 export const SeasonDetail = () => {
-    const { seasonNumber } = useParams()
+    const { resultId, seasonNumber } = useParams()
     const { getSeasonBySeasonNumber } = useContext(SeasonContext)
     const [season, setSeason] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -12,7 +12,7 @@ export const SeasonDetail = () => {
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
-        getSeasonBySeasonNumber(seasonNumber).then((res) => setSeason(res)).then(() => setIsLoading(false))
+        getSeasonBySeasonNumber(seasonNumber, resultId).then((res) => setSeason(res)).then(() => setIsLoading(false))
     }, [])
 
     if (isLoading) {
@@ -33,7 +33,7 @@ export const SeasonDetail = () => {
                     <div key={`episode--${episode.id}`} className="flex justify-center">
                         <div className="w-1/2 justify-end pr-4 pl-8"><img src={`${episodeimgURL}${episode.still_path}`}/></div>
                         <div className="w-1/2 justify-start pl-4 pr-8">
-                            <Link to={`episodes/${episode.episode_number}`}>
+                            <Link to={`episode/${episode.episode_number}`}>
                                 <h3 className="text-2xl">{episode.name}</h3>
                             </Link>
                             <p className="text-gray-500">{episode.overview}</p>

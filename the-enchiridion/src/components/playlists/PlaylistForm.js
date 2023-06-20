@@ -2,8 +2,10 @@ import { useContext, useEffect, useState, Fragment } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { PlaylistContext } from "./PlaylistProvider"
 import { SeasonContext } from "../seasons/SeasonProvider"
+import { SearchContext } from "../search/SearchProvider"
 import { Loading } from "../svgs/Loading.js"
 import { TrashIcon } from "../svgs/TrashIcon.js"
+import { MagnifyingGlass } from "../svgs/MagnifyingGlass.js"
 
 export const PlaylistForm = () => {
   const [playlist, setPlaylist] = useState({
@@ -15,22 +17,36 @@ export const PlaylistForm = () => {
     useContext(PlaylistContext);
   const { seasons, setSeasons, getAllSeasons, getSeasonBySeasonNumber } =
     useContext(SeasonContext);
+  const { searchResults, setSearchResults, getAllSearchResults } =
+    useContext(SearchContext);
   const { playlistId } = useParams();
   const [focused, setFocused] = useState({
     name: false,
     description: false,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState({
+    id: 0,
+    name: "",
+    overview: "",
+    poster_path: "",
+    backdrop_path: "",
+    seasons: [],
+  });
+  const [showId, setShowId] = useState(null);
   const [season, setSeason] = useState({
     id: 0,
     episodes: [],
   });
   const [seasonNumber, setSeasonNumber] = useState(null);
-  const [showEpisodeSelect, setShowEpisodeSelect] = useState(false);
+  const [displayShowSelect, setDisplayShowSelect] = useState(false);
+  const [displaySeasonSelect, setDisplaySeasonSelect] = useState(false);
+  const [displayEpisodeSelect, setDisplayEpisodeSelect] = useState(false);
   const [episodes, setEpisodes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
-  const episodeimgURL = "https://www.themoviedb.org/t/p/original"
+  const episodeimgURL = "https://www.themoviedb.org/t/p/original";
 
   // Get current window dimensions
   function getCurrentDimension() {
@@ -52,13 +68,6 @@ export const PlaylistForm = () => {
     };
   }, [screenSize]);
 
-  // Get all seasons on page load
-  useEffect(() => {
-    getAllSeasons()
-      .then((res) => setSeasons(res))
-      .then(() => setIsLoading(false));
-  }, []);
-
   // Get playlist by id if in url
   useEffect(() => {
     if (playlistId) {
@@ -66,13 +75,34 @@ export const PlaylistForm = () => {
     }
   }, [playlistId]);
 
-  // Get season by season number
+  // Get search results when search term changes
+  useEffect(() => {
+    if (searchTerm !== "") {
+      getAllSearchResults(searchTerm)
+        .then((res) => setSearchResults(res))
+        .then(() => setIsLoading(false));
+    }
+  }, [searchTerm]);
+
+  // Get show by id
+  useEffect(() => {
+    if (showId !== null) {
+      getAllSeasons(showId)
+        .then((res) => setSeasons(res))
+        .then(() => setIsLoading(false));
+    }
+  }, [showId]);
+
+  // Get season by season number and show id
   useEffect(() => {
     if (seasonNumber !== null) {
-      getSeasonBySeasonNumber(seasonNumber).then((res) => {
+      getSeasonBySeasonNumber(seasonNumber, showId).then((res) => {
         setSeason(res);
         const modifiedEpisodes = res.episodes;
-        modifiedEpisodes.map((episode) => (episode.series_id = 15260));
+        modifiedEpisodes.forEach((episode) => {
+          episode.series_name = show.name;
+          episode.series_id = showId
+        });
         setEpisodes(modifiedEpisodes);
       });
     }
@@ -156,13 +186,22 @@ export const PlaylistForm = () => {
     return window.alert(
       "Please fill out all fields and add at least one episode to the playlist before saving."
     );
-  }
+  };
 
+  const displayAirDate = (object) => {
+    if (object.first_air_date) {
+      return object.first_air_date.slice(0, 4);
+    } else if (object.release_date) {
+      return object.release_date.slice(0, 4);
+    } else if (object.air_date) {
+      const date = new Date(object.air_date);
+      const formattedDate = date.toLocaleDateString("en-US", {"month": "long", "day": "numeric", "year": "numeric"});
+      return formattedDate;
+    } else {
+      return "N/A";
+    }
+  };
 
-  if (isLoading) {
-    // If loading, show the spinning loading animation
-    return <Loading />;
-  }
   return (
     <>
       <main>
@@ -215,8 +254,61 @@ export const PlaylistForm = () => {
                 }
               />
             </fieldset>
-            <fieldset></fieldset>
             <fieldset>
+              <div className="w-full sticky mb-6 top-0 z-10 bg-white dark:bg-gray-800">
+                <MagnifyingGlass />
+                <input
+                  type="text"
+                  id="search"
+                  className="search-bar"
+                  placeholder="Search for a show"
+                  onChange={(event) => {
+                    setDisplaySeasonSelect(false);
+                    setDisplayEpisodeSelect(false);
+                    setSearchTerm(event.target.value);
+                    setDisplayShowSelect(true);
+                  }}
+                />
+              </div>
+            </fieldset>
+            <fieldset
+              style={{
+                visibility: displayShowSelect ? "visible" : "hidden",
+              }}
+            >
+              {isLoading ? (
+                <div className="flex justify-center items-center">
+                  <Loading />
+                </div>
+              ) : (
+                <select
+                  id="show"
+                  className="mb-6 select w-full max-w-xs"
+                  onChange={(event) => {
+                    const selectedShow = searchResults.find(
+                      (result) => result.id === parseInt(event.target.value)
+                    );
+                    setShow(selectedShow)
+                    setShowId(selectedShow.id);
+                    setDisplaySeasonSelect(true);
+                  }}
+                >
+                  <option value="0">Select a show</option>
+                  {searchResults.map((result) => {
+                    return (
+                      <option key={result.id} value={result.id}>
+                        {result.name} ({displayAirDate(result)})
+                      </option>
+                    );
+                  })}
+                </select>
+              )}
+            </fieldset>
+            <fieldset
+              style={{
+                visibility: displaySeasonSelect ? "visible" : "hidden",
+              }}
+            >
               <select
                 id="season"
                 className="mb-6 select w-full max-w-xs"
@@ -228,9 +320,9 @@ export const PlaylistForm = () => {
 
                   // If a valid season is selected, show the episode select
                   if (selectedSeason.id !== 0) {
-                    setShowEpisodeSelect(true);
+                    setDisplayEpisodeSelect(true);
                   } else {
-                    setShowEpisodeSelect(false);
+                    setDisplayEpisodeSelect(false);
                   }
                 }}
               >
@@ -245,7 +337,9 @@ export const PlaylistForm = () => {
               </select>
             </fieldset>
             <fieldset
-              style={{ visibility: showEpisodeSelect ? "visible" : "hidden" }}
+              style={{
+                visibility: displayEpisodeSelect ? "visible" : "hidden",
+              }}
             >
               <select
                 id="episode"
@@ -275,7 +369,7 @@ export const PlaylistForm = () => {
                               <img
                                 src={`${episodeimgURL}${episode.still_path}`}
                                 alt={episode.name}
-                                className="w-full h-auto"
+                                className="w-full h-auto rounded-md"
                               />
                             </div>
                             <div className="col-span-1">
@@ -283,14 +377,15 @@ export const PlaylistForm = () => {
                                 {episode.name}
                               </h2>
                               <p className="text-sm">
-                                Season {episode.season_number} Episode{" "}
+                                {episode.series_name} - Season{" "}
+                                {episode.season_number} Episode{" "}
                                 {episode.episode_number}
                               </p>
                               <p className="text-sm text-gray-500">
                                 {episode.overview}
                               </p>
                               <p className="text-sm text-gray-500">
-                                {episode.air_date}
+                                {displayAirDate(episode)}
                               </p>
                             </div>
                             <div className="col-span-1 flex items-start justify-end">
@@ -310,7 +405,8 @@ export const PlaylistForm = () => {
                                 {episode.name}
                               </h2>
                               <p className="text-sm text-gray-500">
-                                Season {episode.season_number} Episode{" "}
+                                {episode.series_name} - Season{" "}
+                                {episode.season_number} Episode{" "}
                                 {episode.episode_number}
                               </p>
                             </div>
@@ -334,7 +430,11 @@ export const PlaylistForm = () => {
                   ? "button-primary-disabled"
                   : "button-primary"
               }
-              onClick={!playlist.name || !playlist.description || !playlist.episodes ? handleDisabledSave : handleSavePlaylist}
+              onClick={
+                !playlist.name || !playlist.description || !playlist.episodes
+                  ? handleDisabledSave
+                  : handleSavePlaylist
+              }
             >
               Save Playlist
             </button>

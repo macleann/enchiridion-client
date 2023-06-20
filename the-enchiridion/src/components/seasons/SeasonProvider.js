@@ -6,12 +6,12 @@ export const SeasonProvider = (props) => {
     const [seasons, setSeasons] = useState([]);
     const url = "http://localhost:8000";
 
-    const getAllSeasons = () => {
-        return fetch(`${url}/seasons`).then((res) => res.json());
+    const getAllSeasons = (resultId) => {
+        return fetch(`${url}/seasons?series_id=${resultId}`).then((res) => res.json());
     }
 
-    const getSeasonBySeasonNumber = (season_number) => {
-        return fetch(`${url}/seasons/${season_number}`).then((res) => res.json());
+    const getSeasonBySeasonNumber = (season_number, resultId) => {
+        return fetch(`${url}/seasons/${season_number}?series_id=${resultId}`).then((res) => res.json());
     }
 
     return (
