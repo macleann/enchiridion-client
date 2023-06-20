@@ -4,7 +4,7 @@ import { SeasonContext } from "./SeasonProvider"
 import { Loading } from "../svgs/Loading.js";
 
 export const SeasonDetail = () => {
-    const { seasonNumber } = useParams()
+    const { resultId, seasonNumber } = useParams()
     const { getSeasonBySeasonNumber } = useContext(SeasonContext)
     const [season, setSeason] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -12,7 +12,7 @@ export const SeasonDetail = () => {
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
-        getSeasonBySeasonNumber(seasonNumber).then((res) => setSeason(res)).then(() => setIsLoading(false))
+        getSeasonBySeasonNumber(seasonNumber, resultId).then((res) => setSeason(res)).then(() => setIsLoading(false))
     }, [])
 
     if (isLoading) {
