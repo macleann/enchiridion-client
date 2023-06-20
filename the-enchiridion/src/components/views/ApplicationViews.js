@@ -28,6 +28,7 @@ export const ApplicationViews = () => {
           <Route path="/seasons" element={<Seasons />} />
           <Route path="/search" element={<SearchBar />} />
           <Route path="/search/:resultId" element={<SearchDetail />} />
+          <Route path="/search/:resultId/season/:seasonNumber" element={<SeasonDetail />} />
         </Route>
       </Routes>
     </>

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { SearchContext } from "./SearchProvider.js"
 import { Loading } from "../svgs/Loading.js"
+import { Seasons } from "../seasons/Seasons.js"
 
 export const SearchDetail = () => {
     const { getResultById } = useContext(SearchContext)
@@ -45,6 +46,9 @@ export const SearchDetail = () => {
                     <h2>{result.first_air_date}</h2>
                     <p className="text-sm md:text-base text-gray-500">{result.overview}</p>
                 </div>
+            </div>
+            <div className="mx-2 my-4">
+                <Seasons seasons={result.seasons} />
             </div>
         </div>
     )
