@@ -5,29 +5,13 @@ export const SearchContext = createContext();
 export const SearchProvider = (props) => {
     const [searchResults, setSearchResults] = useState([])
     const url = "http://localhost:8000"
-    const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"))
-    if (currentUser?.token) {
-        currentUser.token = currentUser.token.replace(/['"]+/g, '')
-    }
 
     const getAllSearchResults = (searchTerms) => {
-        return fetch(`${url}/series?q=${searchTerms}`, 
-        {
-            headers: {
-                "Authorization": `Token ${currentUser.token}`
-            }
-        }
-        ).then(res => res.json())
+        return fetch(`${url}/series?q=${searchTerms}`).then(res => res.json())
     }
 
     const getResultById = (id) => {
-        return fetch(`${url}/series/${id}`, 
-        {
-            headers: {
-                "Authorization": `Token ${currentUser.token}`
-            }
-        }
-        ).then(res => res.json())
+        return fetch(`${url}/series/${id}`).then(res => res.json())
 
     }
 
