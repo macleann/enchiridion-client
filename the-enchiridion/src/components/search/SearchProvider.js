@@ -21,7 +21,14 @@ export const SearchProvider = (props) => {
     }
 
     const getResultById = (id) => {
-        return fetch(`${url}/series/${id}`).then(res => res.json())
+        return fetch(`${url}/series/${id}`, 
+        {
+            headers: {
+                "Authorization": `Token ${currentUser.token}`
+            }
+        }
+        ).then(res => res.json())
+
     }
 
     return (

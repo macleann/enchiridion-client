@@ -95,9 +95,7 @@ export const SearchBar = () => {
             <div className="flex flex-wrap justify-center items-start my-2">
               {searchResults.map((result) => {
                 return (
-                  <Link key={result.id} className="card">
-                    {" "}
-                    {/* TODO: Add a to={} to the <Link> component that takes the user to a more detailed view of the show */}
+                  <Link to={`/search/${result.id}`} key={result.id} className="card">
                     {displayPoster(result)}
                     <div className="text-center text-ellipsis md:text-xl">{result.name}</div>
                   </Link>
