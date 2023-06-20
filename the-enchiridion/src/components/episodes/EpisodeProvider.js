@@ -6,8 +6,8 @@ export const EpisodeProvider = (props) => {
     const [episode, setEpisode] = useState({});
     const url = "http://localhost:8000";
 
-    const getEpisodeByNumberFromTMDB = (seasonNumber, episodeNumber) => {
-        return fetch(`${url}/episodes/tmdb/${seasonNumber}/${episodeNumber}`).then((res) => res.json());
+    const getEpisodeByNumberFromTMDB = (resultId, seasonNumber, episodeNumber) => {
+        return fetch(`${url}/episodes/tmdb_single_episode?series_id=${resultId}&season_number=${seasonNumber}&episode_number=${episodeNumber}`).then((res) => res.json());
     }
 
     const getEpisodeByIdFromLocalDB = (episodeId) => {

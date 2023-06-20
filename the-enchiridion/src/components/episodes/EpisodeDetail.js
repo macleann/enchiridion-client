@@ -6,15 +6,15 @@ import { Loading } from "../svgs/Loading.js";
 
 export const EpisodeDetail = () => {
     const { episode, setEpisode, getEpisodeByNumberFromTMDB, getEpisodeByIdFromLocalDB } = useContext(EpisodeContext);
-    const { episodeId, seasonNumber, episodeNumber } = useParams();
+    const { episodeId, resultId, seasonNumber, episodeNumber } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
         if (episodeId) {
             getEpisodeByIdFromLocalDB(episodeId).then((res) => setEpisode(res)).then(() => setIsLoading(false));
-        } else if (seasonNumber && episodeNumber) {
-            getEpisodeByNumberFromTMDB(seasonNumber, episodeNumber).then((res) => setEpisode(res)).then(() => setIsLoading(false));
+        } else if (resultId && seasonNumber && episodeNumber) {
+            getEpisodeByNumberFromTMDB(resultId, seasonNumber, episodeNumber).then((res) => setEpisode(res)).then(() => setIsLoading(false));
         }
     }, []);
 
