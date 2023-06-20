@@ -1,6 +1,6 @@
 # Enchiridion Client
 
-The Enchiridion Client is a front-end client application for The Enchiridion, a TV playlist-making app with a Django backend interfacing with The Movie Database (TMDB) API. Currently, the app supports only one show, Adventure Time, but plans are in place to support any show via the external API in the future. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Enchiridion Client is a front-end client application for The Enchiridion, a TV playlist-making app with a Django backend interfacing with The Movie Database (TMDB) API. Currently, the app allows users to search through any show already within The Movie Databse (TMDB), but plans are in place to support watch links via the Flixed API in the future. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Features
 - Ability to create, view, update, and delete custom playlists.
