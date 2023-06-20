@@ -155,19 +155,11 @@ export const PlaylistForm = () => {
   const handleSavePlaylist = (event) => {
     event.preventDefault();
     if (playlistId) {
-      // TODO: remove this once we add series_name to episode model and local episode serializer
-      playlist.episodes.forEach((episode) => {
-        delete episode.series_name
-      });
       // update
       updatePlaylist(playlist).then(() => {
         navigate(`/playlists/${playlistId}`);
       });
     } else {
-      // TODO: remove this once we add series_name to episode model and local episode serializer
-      playlist.episodes.forEach((episode) => {
-        delete episode.series_name
-      });
       // create
       createPlaylist(playlist).then(() => {
         navigate("/playlists");
