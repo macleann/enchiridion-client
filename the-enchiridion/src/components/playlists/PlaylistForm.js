@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, Fragment } from "react"
+import { useContext, useEffect, useState, useCallback } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { PlaylistContext } from "./PlaylistProvider"
 import { SeasonContext } from "../seasons/SeasonProvider"
@@ -202,6 +202,23 @@ export const PlaylistForm = () => {
     }
   };
 
+  // Debounce function for search
+  function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    }
+  }
+
+  // Debounce search
+  const debouncedSearch = useCallback(
+    debounce((e) => setSearchTerm(e.target.value), 500),
+    [],
+  )
+
   return (
     <>
       <main>
@@ -265,7 +282,7 @@ export const PlaylistForm = () => {
                   onChange={(event) => {
                     setDisplaySeasonSelect(false);
                     setDisplayEpisodeSelect(false);
-                    setSearchTerm(event.target.value);
+                    debouncedSearch(event);
                     setDisplayShowSelect(true);
                   }}
                 />

@@ -34,6 +34,14 @@ export const SearchDetail = () => {
 
     if (isLoading) {
         return <Loading />
+    } else if (result.error) {
+        console.log(result.error)
+        return (
+            <div className="mx-2 my-4">
+                <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
+                <Link to="/search" className="text-blue-500 hover:text-blue-700">Back to search</Link>
+            </div>
+        )
     }
     return (
         <div className="mx-2 my-4">

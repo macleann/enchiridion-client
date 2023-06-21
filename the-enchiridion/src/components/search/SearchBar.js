@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SearchContext } from "./SearchProvider";
 import { Loading } from "../svgs/Loading.js";
@@ -14,11 +14,27 @@ export const SearchBar = () => {
             setIsLoading(true)
             getAllSearchResults(searchTerms)
                 .then(res => setSearchResults(res))
-                .then(() => {
-                    setTimeout(setIsLoading(false), 1000)
-                })
+                .then(() => setIsLoading(false))
         }
     }, [searchTerms])
+
+    // Function to add a delay to any given function, in this case, the search function so that it doesn't fire on every keystroke
+    function debounce(func, delay) {
+      let debounceTimer;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+      }
+    }
+
+    // Debounce the search function
+    // useCallback is used to prevent the function from being recreated on every render
+    const debouncedSearch = useCallback(
+      debounce((e) => setSearchTerms(e.target.value), 500),
+      [],
+    )
 
     const displayPoster = (result) => {
         if (result.poster_path !== null) {
@@ -46,6 +62,16 @@ export const SearchBar = () => {
         }
     }
 
+    if (searchResults.error) {
+        console.log(searchResults.error)
+        return (
+        <div className="text-center">
+            <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
+            <p>Don't worry, neither of us did anything wrong. It's just finnicky.</p>
+            <p>Try refreshing the page and searching again.</p>
+        </div>
+      )
+    }
 
     return (
       <div className="flex items-center justify-center my-4 mx-4">
@@ -57,7 +83,10 @@ export const SearchBar = () => {
               id="simple-search"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Find a show..."
-              onChange={(e) => setSearchTerms(e.target.value)}
+              onChange={(e) =>{
+                setIsLoading(true)
+                debouncedSearch(e)
+              }}
             />
           </div>
           {isLoading ? (
