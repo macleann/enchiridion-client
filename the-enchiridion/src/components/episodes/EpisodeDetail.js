@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { EpisodeContext } from "./EpisodeProvider";
 import { Loading } from "../svgs/Loading.js";
 
@@ -22,17 +22,22 @@ export const EpisodeDetail = () => {
         return <Loading />;
     } else if (episode.error) {
         console.log(episode.error)
-        return <h1>Episode not found</h1>;
+        return (
+          <div className="text-center">
+            <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
+            <Link to={`/search/${resultId}/season/${seasonNumber}`} className="text-blue-500 hover:text-blue-700">Back to season {seasonNumber}</Link>
+          </div>
+        );
     }
     return <>
         <div>
-            <h2 className="mt-4 text-3xl text-center">{episode.name}</h2>
+            <h2 className="mt-4 text-3xl text-center">{episode?.name}</h2>
             <div className="flex justify-center mt-4">
-                <div className="w-1/2 pr-4 pl-8"><img src={`${episodeimgURL}${episode.still_path}`}/></div>
+                <div className="w-1/2 pr-4 pl-8"><img src={`${episodeimgURL}${episode?.still_path}`}/></div>
                 <div className="w-1/2 flex-col justify-start pl-4 pr-8">
                     <div>{episode.overview}</div>
-                    <div className="mt-4">Air Date: {episode.air_date}</div>
-                    <div className="mt-4">Runtime: {episode.runtime} minutes</div>
+                    <div className="mt-4">Air Date: {episode?.air_date}</div>
+                    <div className="mt-4">Runtime: {episode?.runtime} minutes</div>
                 </div>
             </div>
         </div>

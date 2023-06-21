@@ -17,8 +17,14 @@ export const SeasonDetail = () => {
 
     if (isLoading) {
         return <Loading />
-    } else if (season.detail === "Not found.") {
-        return <h1>Season not found</h1>
+    } else if (season.error) {
+        console.log(season.error)
+        return (
+            <div className="mx-2 my-4">
+                <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
+                <Link to="/search" className="text-blue-500 hover:text-blue-700">Back to search</Link>
+            </div>
+        )
     }
     return (
         <>
