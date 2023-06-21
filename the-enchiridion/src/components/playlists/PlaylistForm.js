@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { PlaylistContext } from "./PlaylistProvider"
 import { SeasonContext } from "../seasons/SeasonProvider"
 import { SearchContext } from "../search/SearchProvider"
+import { DnDEpisodeOrder } from "../dragndrop/DnDEpisodeOrder"
 import { Loading } from "../svgs/Loading.js"
-import { TrashIcon } from "../svgs/TrashIcon.js"
 import { MagnifyingGlass } from "../svgs/MagnifyingGlass.js"
 
 export const PlaylistForm = () => {
@@ -46,9 +46,9 @@ export const PlaylistForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
-  const episodeimgURL = "https://www.themoviedb.org/t/p/original";
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Get current window dimensions
+  // Get current window size
   function getCurrentDimension() {
     return {
       width: window.innerWidth,
@@ -56,17 +56,16 @@ export const PlaylistForm = () => {
     };
   }
 
-  // Update window dimensions on resize
+  // Get window size on resize
   useEffect(() => {
     const updateDimension = () => {
       setScreenSize(getCurrentDimension());
+      setIsMobile(window.innerWidth <= 768); // set isMobile based on window size
     };
-    window.addEventListener("resize", updateDimension);
 
-    return () => {
-      window.removeEventListener("resize", updateDimension);
-    };
-  }, [screenSize]);
+    window.addEventListener("resize", updateDimension);
+    return () => window.removeEventListener("resize", updateDimension);
+  }, []);
 
   // Get playlist by id if in url
   useEffect(() => {
@@ -101,7 +100,7 @@ export const PlaylistForm = () => {
         const modifiedEpisodes = res.episodes;
         modifiedEpisodes.forEach((episode) => {
           episode.series_name = show.name;
-          episode.series_id = showId
+          episode.series_id = showId;
         });
         setEpisodes(modifiedEpisodes);
       });
@@ -139,6 +138,16 @@ export const PlaylistForm = () => {
     setPlaylist(newPlaylist);
   };
 
+  // Handle reordering episodes
+  const handleReorder = (newOrder) => {
+    const newPlaylist = { ...playlist };
+    newOrder.forEach((episode, index) => {
+      episode.order_number = index + 1;
+    });
+    newPlaylist.episodes = newOrder;
+    setPlaylist(newPlaylist);
+  };
+
   // Handle the css class for the input label
   const handleFocus = (field, isFocused) => {
     setFocused({ ...focused, [field]: isFocused });
@@ -167,6 +176,7 @@ export const PlaylistForm = () => {
     }
   };
 
+  // Handle disabling the save button if required fields are not filled out
   const handleDisabledSave = (event) => {
     event.preventDefault();
     const isDisabled = {
@@ -188,6 +198,7 @@ export const PlaylistForm = () => {
     );
   };
 
+  // Handle displaying an object's air date
   const displayAirDate = (object) => {
     if (object.first_air_date) {
       return object.first_air_date.slice(0, 4);
@@ -195,7 +206,11 @@ export const PlaylistForm = () => {
       return object.release_date.slice(0, 4);
     } else if (object.air_date) {
       const date = new Date(object.air_date);
-      const formattedDate = date.toLocaleDateString("en-US", {"month": "long", "day": "numeric", "year": "numeric"});
+      const formattedDate = date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
       return formattedDate;
     } else {
       return "N/A";
@@ -205,19 +220,19 @@ export const PlaylistForm = () => {
   // Debounce function for search
   function debounce(func, delay) {
     let debounceTimer;
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    }
+    };
   }
 
   // Debounce search
   const debouncedSearch = useCallback(
     debounce((e) => setSearchTerm(e.target.value), 500),
-    [],
-  )
+    []
+  );
 
   return (
     <>
@@ -305,7 +320,7 @@ export const PlaylistForm = () => {
                     const selectedShow = searchResults.find(
                       (result) => result.id === parseInt(event.target.value)
                     );
-                    setShow(selectedShow)
+                    setShow(selectedShow);
                     setShowId(selectedShow.id);
                     setDisplaySeasonSelect(true);
                   }}
@@ -374,72 +389,13 @@ export const PlaylistForm = () => {
               </select>
             </fieldset>
             <fieldset>
-              <ol>
-                {playlist.episodes
-                  .sort((episode) => episode.order_number)
-                  .map((episode) => {
-                    return (
-                      <li key={episode.id} className="my-4">
-                        {screenSize.width > 768 ? ( // If the screen size is larger than 768px (typically considered a desktop view)
-                          <div className="grid grid-cols-3 items-start gap-4">
-                            <div className="col-span-1">
-                              <img
-                                src={`${episodeimgURL}${episode.still_path}`}
-                                alt={episode.name}
-                                className="w-full h-auto rounded-md"
-                              />
-                            </div>
-                            <div className="col-span-1">
-                              <h2 className="font-bold text-xl">
-                                {episode.name}
-                              </h2>
-                              <p className="text-sm">
-                                {episode.series_name} - Season{" "}
-                                {episode.season_number} Episode{" "}
-                                {episode.episode_number}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {episode.overview}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {displayAirDate(episode)}
-                              </p>
-                            </div>
-                            <div className="col-span-1 flex items-start justify-end">
-                              <button
-                                className="button-delete bg-white hover:bg-red-500 text-black hover:text-white"
-                                value={episode.id}
-                                onClick={handleRemoveEpisode}
-                              >
-                                <TrashIcon />
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h2 className="font-bold text-xl">
-                                {episode.name}
-                              </h2>
-                              <p className="text-sm text-gray-500">
-                                {episode.series_name} - Season{" "}
-                                {episode.season_number} Episode{" "}
-                                {episode.episode_number}
-                              </p>
-                            </div>
-                            <button
-                              className="button-delete bg-white hover:bg-red-500 text-black hover:text-white"
-                              value={episode.id}
-                              onClick={handleRemoveEpisode}
-                            >
-                              <TrashIcon />
-                            </button>
-                          </div>
-                        )}
-                      </li>
-                    );
-                  })}
-              </ol>
+              <DnDEpisodeOrder
+                episodes={playlist.episodes}
+                onReorder={handleReorder}
+                handleRemoveEpisode={handleRemoveEpisode}
+                displayAirDate={displayAirDate}
+                isMobile={isMobile}
+              />
             </fieldset>
             <button
               className={
