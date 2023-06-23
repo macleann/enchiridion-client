@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { PlaylistContext } from "./PlaylistProvider"
 import { SeasonContext } from "../seasons/SeasonProvider"
 import { SearchContext } from "../search/SearchProvider"
+import { useScreenSize } from "../utils/useScreenSize"
 import { DnDEpisodeOrder } from "../dragndrop/DnDEpisodeOrder"
 import { Loading } from "../svgs/Loading.js"
 import { MagnifyingGlass } from "../svgs/MagnifyingGlass.js"
@@ -45,27 +46,7 @@ export const PlaylistForm = () => {
   const [episodes, setEpisodes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const [screenSize, setScreenSize] = useState(getCurrentDimension());
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  // Get current window size
-  function getCurrentDimension() {
-    return {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-  }
-
-  // Get window size on resize
-  useEffect(() => {
-    const updateDimension = () => {
-      setScreenSize(getCurrentDimension());
-      setIsMobile(window.innerWidth <= 768); // set isMobile based on window size
-    };
-
-    window.addEventListener("resize", updateDimension);
-    return () => window.removeEventListener("resize", updateDimension);
-  }, []);
+  const { isMobile } = useScreenSize();
 
   // Get playlist by id if in url
   useEffect(() => {

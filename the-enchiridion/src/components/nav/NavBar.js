@@ -1,11 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const localEnchiridionUser = localStorage.getItem("enchiridion_user");
-  const enchiridionUserObject = JSON.parse(localEnchiridionUser);
+
+  useEffect(() => {
+    const navBar = document.querySelector('#navBar');
+    const height = navBar.offsetHeight;
+    document.documentElement.style.setProperty('--navbar-height', `${height}px`);
+  }, [isOpen]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem("enchiridion_user");
@@ -17,7 +22,7 @@ export const NavBar = () => {
   const handleClick = () => setIsOpen(false);
 
   return (
-    <div className="md:flex md:items-center p-5 bg-white bg-opacity-50">
+    <div id="navBar" className="md:flex md:items-center p-5 bg-white bg-opacity-50">
       <div className="flex justify-between items-center">
         <Link to="/">
           <img className="w-16 h-auto" src="/Enchiridion.png" alt="Enchiridion" />
