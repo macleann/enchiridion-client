@@ -1,6 +1,10 @@
 export const Home = () => {
-    return <>
-        <h1>Home</h1>
-        <p>Welcome to the Enchiridion!</p>
-    </>
+    return (
+      <>
+        <div className="flex flex-col items-center">
+          <h1 className="my-8 text-3xl">Home</h1>
+          <p className="text-lg">Welcome to the Enchiridion!</p>
+        </div>
+      </>
+    );
 }

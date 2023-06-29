@@ -1,30 +1,34 @@
-import { useContext, useEffect, useState } from "react";
-import { SeasonContext } from "./SeasonProvider";
+import { useScreenSize } from "../utils/useScreenSize";
 import { Link } from "react-router-dom";
-import { Loading } from "../svgs/Loading.js";
 
 export const Seasons = ({ seasons }) => {
-  const smImgUrl = "https://www.themoviedb.org/t/p/w130_and_h195_bestv2";
-  const lgImgUrl = "https://www.themoviedb.org/t/p/w260_and_h390_bestv2";
-  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  const { isMobile } = useScreenSize();
+  let seasonImgURL = ""
 
-  function getCurrentDimension() {
-    return {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-  }
-
-  useEffect(() => {
-    const updateDimension = () => {
-      setScreenSize(getCurrentDimension());
-    };
-    window.addEventListener("resize", updateDimension);
-
-    return () => {
-      window.removeEventListener("resize", updateDimension);
-    };
-  }, [screenSize]);
+  const displayPoster = (season) => {
+    if (season.poster_path !== null) {
+      if (isMobile) {
+        seasonImgURL = "https://www.themoviedb.org/t/p/original";
+      } else {
+        seasonImgURL = "https://www.themoviedb.org/t/p/w500";
+      }
+      return (
+        <img
+          src={`${seasonImgURL}${season.poster_path}`}
+          alt={season.name}
+          className="rounded"
+        />
+      );
+    } else {
+      return (
+        <img
+          src="https://via.placeholder.com/150x225.png?text=No+Image"
+          alt={season.name}
+          className="rounded"
+        />
+      );
+    }
+  };
 
   if (seasons.length === 0) {
     return <h1>No seasons found</h1>;
@@ -46,18 +50,10 @@ export const Seasons = ({ seasons }) => {
               >
                 <div className="md:w-1/2">
                   <div className="h-full">
-                    <img
-                      className="rounded-sm md:rounded-md lg:rounded-lg xl:rounded-xl"
-                      src={
-                        screenSize.width < 768
-                          ? `${smImgUrl}${season.poster_path}`
-                          : `${lgImgUrl}${season.poster_path}`
-                      }
-                      alt={season.name}
-                    />
+                    {displayPoster(season)}
                   </div>
                 </div>
-                {screenSize.width > 767 ? (
+                {!isMobile ? (
                   <div className="md:w-1/2">
                     {" "}
                     {/* User is most likely on a desktop/tablet, show all season info */}
@@ -83,7 +79,7 @@ export const Seasons = ({ seasons }) => {
                     <div className="pt-4 text-xl text-center">
                       {season.name}
                     </div>
-                    <div className="flex justify-between pt-4 text-center text-xs text-gray-500">
+                    <div className="flex justify-center pt-4 text-center text-xs text-gray-500">
                       <p>
                         {season.air_date} • {season.episode_count} episodes
                       </p>

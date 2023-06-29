@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EpisodeContext } from "./EpisodeProvider";
+import { useScreenSize } from "../utils/useScreenSize";
 import { Loading } from "../svgs/Loading.js";
 
 
 export const EpisodeDetail = () => {
     const { episode, setEpisode, getEpisodeByNumberFromTMDB, getEpisodeByIdFromLocalDB } = useContext(EpisodeContext);
-    const { episodeId, resultId, seasonNumber, episodeNumber } = useParams();
+    const { playlistId, episodeId, resultId, seasonNumber, episodeNumber } = useParams();
     const [isLoading, setIsLoading] = useState(true);
+    const { isMobile } = useScreenSize();
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
@@ -17,6 +19,24 @@ export const EpisodeDetail = () => {
             getEpisodeByNumberFromTMDB(resultId, seasonNumber, episodeNumber).then((res) => setEpisode(res)).then(() => setIsLoading(false));
         }
     }, []);
+
+    const backToLink = () => {
+      if (playlistId && episodeId) {
+        return `/playlists/${playlistId}`;
+      } else if (resultId && seasonNumber && episodeNumber) {
+        return `/search/${resultId}/season/${seasonNumber}`;
+      }
+    };
+
+    const displayAirDate = (episode) => {
+        const episodeDate = new Date(episode.air_date);
+        const formattedDate = episodeDate.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
+        return formattedDate;
+    };
 
     if (isLoading) {
         return <Loading />;
@@ -29,18 +49,29 @@ export const EpisodeDetail = () => {
           </div>
         );
     }
-    return <>
+    return (
+      <>
+        <Link
+          className="ml-4 underline"
+          to={backToLink()}
+        >
+          {playlistId ? "Back to playlist" : "Back to season "}
+        </Link>
         <div>
-            <h2 className="mt-4 text-3xl text-center">{episode?.name}</h2>
-            <div className="flex justify-center mt-4">
-                <div className="w-1/2 pr-4 pl-8"><img src={`${episodeimgURL}${episode?.still_path}`}/></div>
-                <div className="w-1/2 flex-col justify-start pl-4 pr-8">
-                    <div>{episode.overview}</div>
-                    <div className="mt-4">Air Date: {episode?.air_date}</div>
-                    <div className="mt-4">Runtime: {episode?.runtime} minutes</div>
-                </div>
+          <h2 className="mt-4 text-3xl text-center">{episode?.name}</h2>
+          <div className="flex flex-col md:flex-row lg:w-2/3 justify-center items-center mt-4 mx-auto">
+            <div className="w-full md:w-1/2 md:mr-4 md:ml-8">
+              <img className="" src={`${episodeimgURL}${episode?.still_path}`} />
             </div>
+            <div className="flex-col md:w-1/2 justify-start md:ml-4 md:mr-8 py-10 text-gray-500">
+              <div className="mt-4 md:mt-0">{episode.overview}</div>
+              <div className="mt-4 text-center">
+                Air Date: {displayAirDate(episode)} • Runtime:{" "}
+                {episode?.runtime} minutes
+              </div>
+            </div>
+          </div>
         </div>
-        
-    </>
+      </>
+    );
 }

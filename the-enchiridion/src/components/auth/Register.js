@@ -101,7 +101,6 @@ export const Register = () => {
             onFocus={() => handleFocus("lastName", true)}
             onBlur={(evt) => handleFocus("lastName", evt.target.value !== "")}
             required
-            autoFocus
           />
           <label
             className={`input-label ${isFocusedOrFilled(

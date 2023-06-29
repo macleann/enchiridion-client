@@ -1,53 +1,74 @@
-import { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { SeasonContext } from "./SeasonProvider"
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { SeasonContext } from "./SeasonProvider";
+import { useScreenSize } from "../utils/useScreenSize.js";
+import { Episodes } from "../episodes/Episodes.js";
 import { Loading } from "../svgs/Loading.js";
 
 export const SeasonDetail = () => {
-    const { resultId, seasonNumber } = useParams()
-    const { getSeasonBySeasonNumber } = useContext(SeasonContext)
-    const [season, setSeason] = useState({})
-    const [isLoading, setIsLoading] = useState(true)
-    const seasonimgURL = "https://www.themoviedb.org/t/p/original"
-    const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
+  const { resultId, seasonNumber } = useParams();
+  const { getSeasonBySeasonNumber } = useContext(SeasonContext);
+  const { isMobile } = useScreenSize();
+  const [season, setSeason] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  let seasonimgURL = "";
+  const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2";
 
-    useEffect(() => {
-        getSeasonBySeasonNumber(seasonNumber, resultId).then((res) => setSeason(res)).then(() => setIsLoading(false))
-    }, [])
+  useEffect(() => {
+    getSeasonBySeasonNumber(seasonNumber, resultId)
+      .then((res) => setSeason(res))
+      .then(() => setIsLoading(false));
+  }, []);
 
-    if (isLoading) {
-        return <Loading />
-    } else if (season.error) {
-        console.log(season.error)
-        return (
-            <div className="mx-2 my-4">
-                <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
-                <Link to="/search" className="text-blue-500 hover:text-blue-700">Back to search</Link>
-            </div>
-        )
-    }
+  if (isMobile) {
+    seasonimgURL = "https://www.themoviedb.org/t/p/original";
+  } else {
+    seasonimgURL = "https://www.themoviedb.org/t/p/w500";
+  }
+
+  const displayAirDate = (season) => {
+    const seasonDate = new Date(season.air_date);
+    const formattedDate = seasonDate.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+    return formattedDate;
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  } else if (season.error) {
+    console.log(season.error);
     return (
-        <>
-            <h2 className="text-3xl text-center mb-6">{season.name}</h2>
-            <div className="flex-column justify-center">
-                <div className="m-8"><img src={`${seasonimgURL}${season.poster_path}`}/></div>
-                <div className="m-8 text-center text-gray-500">{season.overview}</div>
-            </div>
-            <div>
-                {season.episodes.map((episode) => {
-                return (
-                    <div key={`episode--${episode.id}`} className="flex justify-center">
-                        <div className="w-1/2 justify-end pr-4 pl-8"><img src={`${episodeimgURL}${episode.still_path}`}/></div>
-                        <div className="w-1/2 justify-start pl-4 pr-8">
-                            <Link to={`episode/${episode.episode_number}`}>
-                                <h3 className="text-2xl">{episode.name}</h3>
-                            </Link>
-                            <p className="text-gray-500">{episode.overview}</p>
-                        </div>
-                    </div>
-                );
-                })}
-            </div>
-        </>
-    )
-}
+      <div className="mx-2 my-4">
+        <h1 className="text-xl md:text-2xl">TMDB failed to respond</h1>
+        <Link to="/search" className="text-blue-500 hover:text-blue-700">
+          Back to search
+        </Link>
+      </div>
+    );
+  }
+  return (
+    <>
+    <Link className="ml-4 underline" to={`/search/${resultId}`}>Back to show</Link>
+      <h2 className="text-3xl text-center mb-6">{season.name}</h2>
+      <div className="flex flex-col items-center">
+        <div className="flex justify-center my-2 mx-8 md:w-full">
+          <img
+            className="rounded-lg"
+            src={`${seasonimgURL}${season.poster_path}`}
+          />
+        </div>
+        <div className="flex-col justify-center">
+          <div className="md:w-3/4 my-2 md:my-8 mx-auto text-center text-gray-500">
+            {season.overview}
+          </div>
+          <div className="md:w-3/4 my-2 md:my-8 mx-auto text-center italic text-gray-500">
+            Originally aired {displayAirDate(season)}
+          </div>
+        </div>
+      </div>
+      <Episodes episodes={season.episodes} isMobile={isMobile} />
+    </>
+  );
+};

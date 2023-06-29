@@ -1,10 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useScreenSize } from "../utils/useScreenSize.js";
 import { PlaylistContext } from "./PlaylistProvider";
+import { Episodes } from "../episodes/Episodes.js";
 import { Loading } from "../svgs/Loading.js";
 
 export const PlaylistDetail = () => {
     const { playlistId } = useParams();
+    const { isMobile } = useScreenSize();
     const { getPlaylistById, deletePlaylist } = useContext(PlaylistContext);
     const [playlist, setPlaylist] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -49,28 +52,19 @@ export const PlaylistDetail = () => {
         return <h1>Playlist not found</h1>;
     }
     return (
-        <>
-            <h2 className="text-3xl text-center mb-6">{playlist.name}</h2>
-            <div className="m-4 text-center text-gray-500">{playlist.description}</div>
-            <div className="flex justify-around m-4">
-                {editPlaylistButton()}
-                {deletePlaylistButton()}
-            </div>
-            <div>
-                {playlist.episodes.map((episode) => {
-                return (
-                    <div key={`episode--${episode.id}`} className="flex justify-center">
-                        <div className="w-1/2 justify-end pr-4 pl-8"><img src={`${episodeimgURL}${episode.still_path}`}/></div>
-                        <div className="w-1/2 justify-start pl-4 pr-8">
-                            <Link to={`${episode.id}`}>
-                                <h3 className="text-2xl">{episode.name}</h3>
-                            </Link>
-                            <p className="text-gray-500">{episode.overview}</p>
-                        </div>
-                    </div>
-                );
-                })}
-            </div>
-        </>
-    )
+      <>
+        <Link className="ml-4 underline" to={`/playlists`}>
+          Back to playlists
+        </Link>
+        <h2 className="text-3xl text-center mb-6">{playlist.name}</h2>
+        <div className="m-4 text-center text-gray-500">
+          {playlist.description}
+        </div>
+        <div className="flex justify-around m-4">
+          {editPlaylistButton()}
+          {deletePlaylistButton()}
+        </div>
+        <Episodes episodes={playlist.episodes} isMobile={isMobile} />
+      </>
+    );
 }
