@@ -21,7 +21,7 @@ Make sure you've followed all installation and setup instructions in the README.
 ```
 git fetch origin YOURxBRANCHxTOxTEST
 git checkout YOURxBRANCHxTOxTEST
-python manage.py runserver
+npm start
 ```
 
 - [ ] 
