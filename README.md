@@ -4,7 +4,7 @@ The Enchiridion Client is a front-end client application for The Enchiridion, a 
 
 ## Features
 - Ability to create, view, update, and delete custom playlists.
-- Sleek user interface designed with Tailwind CSS.
+- Sleek user interface designed with Tailwind CSS and Material UI.
 - Browsing functionality for shows, seasons, and episodes, made possible by interfacing with the TMDB API.
 
 ## Getting Started
@@ -43,6 +43,7 @@ Before you begin, ensure you have met the following requirements:
 - [React](https://reactjs.org/)
 - [Create React App](https://create-react-app.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Material UI](https://mui.com/material-ui/getting-started/)
 
 ## Contact
 
