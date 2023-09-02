@@ -1,14 +1,17 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthProvider";
+import { AuthContext } from "../../providers/AuthProvider";
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "../../redux/actions/snackbarActions";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [focused, setFocused] = useState({ username: false, password: false });
-  const { postUserForLogin } = useContext(AuthContext);
+  const { postUserForLogin, setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -23,7 +26,8 @@ export const Login = () => {
             id: user.id,
           })
         );
-
+        setIsLoggedIn(true);
+        dispatch(showSnackbar("Logged in successfully", "success"));
         navigate("/");
       } else {
         window.alert("Invalid login");

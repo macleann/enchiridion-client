@@ -1,4 +1,4 @@
-import { useScreenSize } from "../utils/useScreenSize";
+import { useScreenSize } from "../../utils/useScreenSize";
 import { Link } from "react-router-dom";
 
 export const Seasons = ({ seasons }) => {

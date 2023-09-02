@@ -4,7 +4,7 @@ export const AuthContext = createContext();
 const url = "http://localhost:8000/";
 
 export const AuthProvider = (props) => {
-  const [users, setUsers] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const postUserForLogin = (username, password) => {
     return fetch(
@@ -34,8 +34,8 @@ export const AuthProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        users,
-        setUsers,
+        isLoggedIn,
+        setIsLoggedIn,
         postUserForLogin,
         postNewUser,
       }}

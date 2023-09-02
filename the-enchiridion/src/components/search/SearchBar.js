@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { SearchContext } from "./SearchProvider";
+import { SearchContext } from "../../providers/SearchProvider";
 import { Loading } from "../svgs/Loading.js";
 import { MagnifyingGlass } from "../svgs/MagnifyingGlass.js";
 
