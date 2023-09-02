@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useScreenSize } from "../utils/useScreenSize.js";
-import { PlaylistContext } from "./PlaylistProvider";
-import { makePlaylistImage } from "../utils/makePlaylistImage.js";
+import { useScreenSize } from "../../utils/useScreenSize.js";
+import { PlaylistContext } from "../../providers/PlaylistProvider.js";
+import { makePlaylistImage } from "../../utils/makePlaylistImage.js";
 import { Loading } from "../svgs/Loading.js";
 
 export const Playlists = () => {

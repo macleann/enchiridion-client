@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { useScreenSize } from "../utils/useScreenSize.js"
-import { SearchContext } from "./SearchProvider.js"
+import { useScreenSize } from "../../utils/useScreenSize.js"
+import { SearchContext } from "../../providers/SearchProvider.js"
 import { Loading } from "../svgs/Loading.js"
 import { Seasons } from "../seasons/Seasons.js"
 

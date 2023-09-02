@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useScreenSize } from "../utils/useScreenSize.js";
-import { PlaylistContext } from "./PlaylistProvider";
+import { useScreenSize } from "../../utils/useScreenSize.js";
+import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { Episodes } from "../episodes/Episodes.js";
 import { Loading } from "../svgs/Loading.js";
 
