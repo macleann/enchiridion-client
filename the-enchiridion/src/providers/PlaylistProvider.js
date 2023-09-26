@@ -1,67 +1,84 @@
-import { createContext, useState } from "react"
+import { createContext, useState } from "react";
 
-export const PlaylistContext = createContext()
+export const PlaylistContext = createContext();
 
 export const PlaylistProvider = (props) => {
-    const [playlists, setPlaylists] = useState([])
-    const url = "http://localhost:8000"
-    const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"))
-    if (currentUser?.token) {
-        currentUser.token = currentUser.token.replace(/['"]+/g, '')
-    }
+  const [playlists, setPlaylists] = useState([]);
+  const url = "http://localhost:8000";
 
-    const getAllPlaylists = () => {
-        return fetch(`${url}/playlists`).then(res => res.json())
-    }
+  const getOptions = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
 
-    const getUserPlaylists = () => {
-        return fetch(`${url}/user-playlists`, {
-            headers: {
-                "Authorization": `Token ${currentUser.token}`
-            }
-        }).then(res => res.json())
-    }
+  const postPutDeleteOptions = (method, body) => ({
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(body),
+  });
 
-    const getPlaylistById = (id) => {
-        return fetch(`${url}/playlists/${id}`).then(res => res.json())
-    }
+  const getAllPlaylists = () => {
+    return fetch(`${url}/playlists`, getOptions)
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
 
-    const createPlaylist = (playlist) => {
-        return fetch(`${url}/user-playlists`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${currentUser.token}`
-            },
-            body: JSON.stringify(playlist)
-        }).then(res => res.json())
-    }
+  const getUserPlaylists = () => {
+    return fetch(`${url}/user-playlists`, getOptions)
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
 
-    const updatePlaylist = (playlist) => {
-        return fetch(`${url}/user-playlists/${playlist.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${currentUser.token}`
-            },
-            body: JSON.stringify(playlist)
-        }).then(res => res.json())
-    }
+  const getPlaylistById = (id) => {
+    return fetch(`${url}/playlists/${id}`, getOptions)
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
 
-    const deletePlaylist = (id) => {
-        return fetch(`${url}/user-playlists/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Token ${currentUser.token}`
-            }
-        })
-    }
-
-    return (
-        <PlaylistContext.Provider value={{
-            playlists, setPlaylists, getAllPlaylists, getUserPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist
-        }}>
-            {props.children}
-        </PlaylistContext.Provider>
+  const createPlaylist = (playlist) => {
+    return fetch(
+      `${url}/user-playlists`,
+      postPutDeleteOptions("POST", playlist)
     )
-}
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
+
+  const updatePlaylist = (playlist) => {
+    return fetch(
+      `${url}/user-playlists/${playlist.id}`,
+      postPutDeleteOptions("PUT", playlist)
+    )
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
+
+  const deletePlaylist = (id) => {
+    return fetch(
+      `${url}/user-playlists/${id}`,
+      postPutDeleteOptions("DELETE")
+    ).catch((err) => console.log(err));
+  };
+
+  return (
+    <PlaylistContext.Provider
+      value={{
+        playlists,
+        setPlaylists,
+        getAllPlaylists,
+        getUserPlaylists,
+        getPlaylistById,
+        createPlaylist,
+        updatePlaylist,
+        deletePlaylist,
+      }}
+    >
+      {props.children}
+    </PlaylistContext.Provider>
+  );
+};

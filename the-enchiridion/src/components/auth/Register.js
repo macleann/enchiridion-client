@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "../../redux/actions/snackbarActions";
+import { setLoggedIn, setUserData } from "../../redux/actions/authActions";
 
 export const Register = () => {
   const [user, setUser] = useState({
@@ -19,18 +22,14 @@ export const Register = () => {
   });
   const { postNewUser } = useContext(AuthContext);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const registerNewUser = () => {
     return postNewUser(user).then((createdUser) => {
-      if (createdUser.hasOwnProperty("token")) {
-        localStorage.setItem(
-          "enchiridion_user",
-          JSON.stringify({
-            token: createdUser.token,
-            id: createdUser.id,
-          })
-        );
-
+      if (createdUser && createdUser.id) {
+        dispatch(setLoggedIn(true));
+        dispatch(setUserData(createdUser));
+        dispatch(showSnackbar("Registered successfully", "success"));
         navigate("/");
       } else if (createdUser.hasOwnProperty("error")) {
         window.alert(createdUser.error);
