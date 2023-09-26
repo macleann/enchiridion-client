@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { useDispatch } from "react-redux";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { showSnackbar } from "../../redux/actions/snackbarActions";
+import { setLoggedIn, setUserData } from "../../redux/actions/authActions";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [focused, setFocused] = useState({ username: false, password: false });
-  const { postUserForLogin, postGoogleUser, setIsLoggedIn } = useContext(AuthContext);
+  const { postUserForLogin, postGoogleUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,17 +19,11 @@ export const Login = () => {
     e.preventDefault();
 
     try {
-      postUserForLogin(username, password).then((foundUser) => {
-        if (foundUser.valid === true) {
-          const user = foundUser;
-          localStorage.setItem(
-            "enchiridion_user",
-            JSON.stringify({
-              token: user.token,
-              id: user.id,
-            })
-          );
-          setIsLoggedIn(true);
+      postUserForLogin(username, password).then((response) => {
+        if (response && response.id) {
+          console.log(response)
+          dispatch(setLoggedIn(true));
+          dispatch(setUserData(response.id));
           dispatch(showSnackbar("Logged in successfully", "success"));
           navigate("/");
         } else {
@@ -53,25 +48,27 @@ export const Login = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
+
     if (code) {
-      postGoogleUser(code).then((user) => {
-        if (user.valid === true) {
-          dispatch(showSnackbar("Logged in successfully", "success"));
-          localStorage.setItem(
-            "enchiridion_user",
-            JSON.stringify({
-              token: user.token,
-              id: user.id,
-            })
-          );
-          setIsLoggedIn(true);
-          navigate("/");
-        } else {
-          dispatch(showSnackbar("Invalid login credentials", "error"));
-        }
-      });
+      postGoogleUser(code)
+        .then((response) => {
+          if (response && response.id) {
+            console.log(response)
+            dispatch(setLoggedIn(true));
+            dispatch(setUserData(response.id));
+            dispatch(showSnackbar("Logged in successfully", "success"));
+            navigate("/");
+          } else {
+            dispatch(showSnackbar("Invalid login credentials", "error"));
+          }
+        })
+        .catch((err) => {
+          dispatch(showSnackbar("An error occurred while logging in", "error"));
+          console.log(err);
+        });
     }
   }, []);
+  
 
   const loginWithGoogle = useGoogleLogin({
     flow: 'auth-code',
@@ -136,6 +133,7 @@ export const Login = () => {
                     : "button-primary mr-2"
                 }
                 disabled={!username || !password}
+                onClick={handleLogin}
               >
                 Log in
               </button>

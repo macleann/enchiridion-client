@@ -4,6 +4,7 @@ import { useScreenSize } from "../../utils/useScreenSize.js";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { makePlaylistImage } from "../../utils/makePlaylistImage.js";
 import { Loading } from "../svgs/Loading.js";
+import { useSelector } from "react-redux";
 
 export const Playlists = () => {
   const { playlists, setPlaylists, getAllPlaylists, getUserPlaylists } =
@@ -12,7 +13,7 @@ export const Playlists = () => {
   const [filterToggle, setFilterToggle] = useState(false);
   const navigate = useNavigate();
   const { isMobile } = useScreenSize();
-  const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
+  const currentUser = useSelector((state) => state.auth.userData);
 
   // Get all playlists on page load
   useEffect(() => {
@@ -42,7 +43,7 @@ export const Playlists = () => {
 
   // Create playlist button
   const createPlaylistButton = () => {
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
       return (
         <button
           className="button-primary m-2"
@@ -56,7 +57,7 @@ export const Playlists = () => {
 
   // My playlists button
   const myPlaylistsButton = () => {
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
       return (
         <button
           className="button-primary m-2"

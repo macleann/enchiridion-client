@@ -4,12 +4,18 @@ import { Register } from "./auth/Register";
 import { NavBar } from "./nav/NavBar";
 import { ApplicationViews } from "../views/ApplicationViews";
 import { GlobalSnackbar } from "../utils/GlobalSnackbar";
-import { AuthProvider } from "../providers/AuthProvider";
+import { AuthContext } from "../providers/AuthProvider";
+import { useContext, useEffect } from "react";
 
 export const Enchiridion = () => {
+  const { verifyAuthentication } = useContext(AuthContext);
+
+  useEffect(() => {
+    verifyAuthentication();
+  }, []);
+
   return (
     <>
-      <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -29,7 +35,6 @@ export const Enchiridion = () => {
             }
           />
         </Routes>
-      </AuthProvider>
     <GlobalSnackbar />
     </>
   );

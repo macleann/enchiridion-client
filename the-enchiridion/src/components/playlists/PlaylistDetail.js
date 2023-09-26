@@ -4,6 +4,7 @@ import { useScreenSize } from "../../utils/useScreenSize.js";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { Episodes } from "../episodes/Episodes.js";
 import { Loading } from "../svgs/Loading.js";
+import { useSelector } from "react-redux";
 
 export const PlaylistDetail = () => {
     const { playlistId } = useParams();
@@ -13,13 +14,13 @@ export const PlaylistDetail = () => {
     const [isLoading, setIsLoading] = useState(true);
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
     const navigate = useNavigate()
+    const currentUser = useSelector((state) => state.auth.userData);
 
     useEffect(() => {
         getPlaylistById(playlistId).then((res) => setPlaylist(res)).then(() => setIsLoading(false));
     }, []);
 
     const editPlaylistButton = () => {
-        const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
         if (playlist.user_id === currentUser?.id) {
             return (
                 <button className="button-primary" onClick={() => navigate(`/playlists/${playlistId}/edit`)}>
@@ -30,7 +31,6 @@ export const PlaylistDetail = () => {
     };
 
     const deletePlaylistButton = () => {
-        const currentUser = JSON.parse(localStorage.getItem("enchiridion_user"));
         if (playlist.user_id === currentUser?.id) {
             return (
                 <button

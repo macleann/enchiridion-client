@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showSnackbar } from "../../redux/actions/snackbarActions";
+import { setLoggedOut } from "../../redux/actions/authActions";
 import { AuthContext } from "../../providers/AuthProvider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -19,9 +20,10 @@ const NavItem = ({ text, action }) => (
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { postLogout } = useContext(AuthContext);
 
   useEffect(() => {
     const navBar = document.querySelector("#navBar");
@@ -33,10 +35,12 @@ export const NavBar = () => {
   }, [isOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem("enchiridion_user");
-    dispatch(showSnackbar("Logged out successfully", "success"));
-    navigate("/", { replace: true });
-    setIsOpen(false);
+    postLogout().then((response) => {
+      dispatch(setLoggedOut(false));
+      dispatch(showSnackbar("Logged out successfully", "success"));
+      navigate("/", { replace: true });
+      setIsOpen(false);
+    });
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -111,7 +115,7 @@ export const NavBar = () => {
           </Link>
         </div>
         <div className="md:justify-end md:mr-4">
-          {localStorage.getItem("enchiridion_user") ? (
+          { isLoggedIn ? (
             <button
               onClick={handleLogout}
               className="block mt-4 ml-2 md:inline-block md:mt-0 font-bold"
