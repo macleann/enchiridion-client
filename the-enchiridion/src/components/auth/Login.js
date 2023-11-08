@@ -87,6 +87,7 @@ export const Login = () => {
             <h2 className="relative mb-3">Please sign in</h2>
             <div className="relative mb-6 group">
               <input
+                name="username"
                 type="text"
                 className="input-field"
                 placeholder="fmertens"
@@ -107,6 +108,7 @@ export const Login = () => {
             </div>
             <div className="relative mb-6">
               <input
+                name="password"
                 type="password"
                 className="input-field"
                 onChange={(evt) => setPassword(evt.target.value)}
@@ -135,9 +137,9 @@ export const Login = () => {
                 disabled={!username || !password}
                 onClick={handleLogin}
               >
-                Log in
+                Login
               </button>
-              <button type="button" onClick={loginWithGoogle}>Log in with Google</button>
+              <button type="button" onClick={loginWithGoogle}>Login with Google</button>
               <section className="ml-2">
                 <Link className="button-primary" to="/register">
                   Not a user yet?

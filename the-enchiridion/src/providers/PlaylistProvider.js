@@ -34,6 +34,12 @@ export const PlaylistProvider = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const getTrendingPlaylists = (days) => {
+    return fetch(`${url}/playlists?trending=true&days=${days}`, getOptions)
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  }
+
   const getPlaylistById = (id) => {
     return fetch(`${url}/playlists/${id}`, getOptions)
       .then((res) => res.json())
@@ -72,6 +78,7 @@ export const PlaylistProvider = (props) => {
         setPlaylists,
         getAllPlaylists,
         getUserPlaylists,
+        getTrendingPlaylists,
         getPlaylistById,
         createPlaylist,
         updatePlaylist,

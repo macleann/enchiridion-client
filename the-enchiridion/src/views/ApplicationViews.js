@@ -16,7 +16,11 @@ export const ApplicationViews = () => {
     <>
       <Routes>
         <Route path="/" element={<Outlet />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={
+            <PlaylistLayout>
+              <Home />
+            </PlaylistLayout>
+          } />
           <Route
             path="/playlists/:playlistId/:episodeId"
             element={

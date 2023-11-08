@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useScreenSize } from "../../utils/useScreenSize.js";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
-import { makePlaylistImage } from "../../utils/makePlaylistImage.js";
+import { PlaylistCard } from "./PlaylistCard";
 import { Loading } from "../svgs/Loading.js";
 import { useSelector } from "react-redux";
 
@@ -73,16 +73,6 @@ export const Playlists = () => {
     }
   };
 
-  // Calculate total runtime of all episodes in a playlist
-  const calculateTotalRuntime = (episodes) => {
-    const totalRunTimeMins = episodes.reduce((runtimeAccumulator, episode) => {
-      return runtimeAccumulator + parseInt(episode.runtime);
-    }, 0);
-    const hours = Math.floor(totalRunTimeMins / 60);
-    const minutes = totalRunTimeMins % 60;
-    return `${hours}h ${minutes}m`;
-  };
-
   if (isLoading) {
     // Spinning wheel loading animation
     return <Loading />;
@@ -96,35 +86,7 @@ export const Playlists = () => {
         {createPlaylistButton()}
       </div>
       <div className="flex flex-wrap justify-evenly">
-        {playlists.map((playlist) => {
-          const playlistImage = makePlaylistImage(playlist);
-          const printTotalRuntime = calculateTotalRuntime(playlist.episodes);
-          const episodeCount = playlist.episodes.length;
-          return (
-            <div key={playlist.id} className="card-playlists">
-              <Link to={`/playlists/${playlist.id}`}>
-                <div>{playlistImage}</div>
-                <div>
-                  <div className="text-lg md:text-xl text-center">{playlist.name}</div>
-                  {isMobile ? null : (
-                    <div className="m-4 text-center text-gray-500">
-                    {playlist.description.length > 200 ? (
-                      <p>{playlist.description.slice(0, 200)}...</p>
-                    ) : (
-                      <p>{playlist.description}</p>
-                    )}
-                  </div>
-                  )}
-                  <div className="text-xs text-center text-gray-500">
-                    <p>
-                      {episodeCount} episodes • {printTotalRuntime}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          );
-        })}
+        {playlists.map((playlist) => <PlaylistCard key={playlist.id} playlist={playlist} />)}
       </div>
     </>
   );

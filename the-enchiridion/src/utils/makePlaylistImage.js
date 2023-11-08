@@ -40,7 +40,7 @@ export const makePlaylistImage = (playlist) => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="w-full sm:w-1/2 md:w-full">
+      <div className="w-full">
         <div className={`grid ${layoutClass} gap-0`}>
           {episodeImages.map((img, index) => (
             <img
