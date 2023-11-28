@@ -5,29 +5,32 @@ pipeline {
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
         DOCKERFILE_CHANGED = 'false'
         PACKAGE_CHANGED = 'false'
+        TARGET_BRANCH = 'main'
     }
     stages {
-        stage('Check Dockerfile Changes') {
+        stage('Check Changes') {
             steps {
                 script {
-                    // Implement logic to check if Dockerfile is changed.
                     def changeLogSets = currentBuild.changeSets
-                    for (int i = 0; i < changeLogSets.size(); i++) {
-                        for (int j = 0; j < changeLogSets[i].items.length; j++) {
-                            def entry = changeLogSets[i].items[j]
-                            entry.paths.each {
-                                if (it.editType.name == 'edit' && it.file.endsWith('Dockerfile')) {
-                                    DOCKERFILE_CHANGED = 'true'
-                                }
-                                else if (it.editType.name == 'edit' && it.file.endsWith('package.json')) {
-                                    PACKAGE_CHANGED = 'true'
+                    if (env.CHANGE_TARGET == TARGET_BRANCH || env.GIT_PREVIOUS_SUCCESSFUL_COMMIT != env.GIT_COMMIT) {
+                        for (int i = 0; i < changeLogSets.size(); i++) {
+                            for (int j = 0; j < changeLogSets[i].items.length; j++) {
+                                def entry = changeLogSets[i].items[j]
+                                entry.paths.each {
+                                    if (it.editType.name == 'edit') {
+                                        if (it.file.endsWith('Dockerfile')) {
+                                            DOCKERFILE_CHANGED = 'true'
+                                        } else if (it.file.endsWith('package.json')) {
+                                            PACKAGE_CHANGED = 'true'
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                     if (DOCKERFILE_CHANGED == 'false' && PACKAGE_CHANGED == 'false') {
                         currentBuild.result = 'SUCCESS'
-                        error("No changes in Dockerfile or package.json. Skipping build and push.")
+                        error("No relevant changes detected. Skipping build and push.")
                     }
                 }
             }
@@ -58,7 +61,6 @@ pipeline {
     }
     post {
         always {
-            // Cleanup, notifications, etc.
             cleanWs()
             echo 'Build finished'
         }
