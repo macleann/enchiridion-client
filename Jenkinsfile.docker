@@ -3,12 +3,12 @@ pipeline {
     environment {
         IMAGE_NAME = 'macleann/enchiridion-client'
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
-        DOCKERFILE_CHANGED = 'false'
-        PACKAGE_CHANGED = 'false'
+        DOCKERFILE_CHANGED = 'true'
+        PACKAGE_CHANGED = 'true'
         TARGET_BRANCH = 'main'
     }
     stages {
-        stage('Check Changes') {
+        /* stage('Check Changes') {
             steps {
                 script {
                     def changeLogSets = currentBuild.changeSets
@@ -34,7 +34,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
         stage('Build') {
             when {
                 expression { DOCKERFILE_CHANGED == 'true' || PACKAGE_CHANGED == 'true' }
