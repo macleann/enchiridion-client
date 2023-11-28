@@ -1,0 +1,66 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'macleann/enchiridion-client'
+        IMAGE_TAG = "v${env.BUILD_NUMBER}"
+        DOCKERFILE_CHANGED = 'false'
+        PACKAGE_CHANGED = 'false'
+    }
+    stages {
+        stage('Check Dockerfile Changes') {
+            steps {
+                script {
+                    // Implement logic to check if Dockerfile is changed.
+                    def changeLogSets = currentBuild.changeSets
+                    for (int i = 0; i < changeLogSets.size(); i++) {
+                        for (int j = 0; j < changeLogSets[i].items.length; j++) {
+                            def entry = changeLogSets[i].items[j]
+                            entry.paths.each {
+                                if (it.editType.name == 'edit' && it.file.endsWith('Dockerfile')) {
+                                    DOCKERFILE_CHANGED = 'true'
+                                }
+                                else if (it.editType.name == 'edit' && it.file.endsWith('package.json')) {
+                                    PACKAGE_CHANGED = 'true'
+                                }
+                            }
+                        }
+                    }
+                    if (DOCKERFILE_CHANGED == 'false' && PACKAGE_CHANGED == 'false') {
+                        currentBuild.result = 'SUCCESS'
+                        error("No changes in Dockerfile or package.json. Skipping build and push.")
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            when {
+                expression { DOCKERFILE_CHANGED == 'true' || PACKAGE_CHANGED == 'true' }
+            }
+            steps {
+                script {
+                    def app = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            when {
+                expression { DOCKERFILE_CHANGED == 'true' || PACKAGE_CHANGED == 'true' }
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
+                        app.push("${IMAGE_TAG}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Cleanup, notifications, etc.
+            cleanWs()
+            echo 'Build finished'
+        }
+    }
+}
