@@ -2,7 +2,7 @@
 FROM node:latest as build
 WORKDIR /app
 COPY the-enchiridion/package*.json ./
-RUN npm install
+RUN npm ci
 COPY the-enchiridion/ ./
 RUN npm run build
 

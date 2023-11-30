@@ -7,9 +7,6 @@ pipeline {
         PACKAGE_CHANGED = 'true'
         TARGET_BRANCH = 'main'
     }
-    options {
-        timeout(time: 30, unit: 'MINUTES')
-    }
     stages {
         stage('Check Changes') {
             steps {
@@ -49,14 +46,16 @@ pipeline {
             }
         }
         stage('Push to Docker Hub') {
-            when {
-                expression { DOCKERFILE_CHANGED == 'true' || PACKAGE_CHANGED == 'true' }
-            }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
-                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                        sh "docker push ${IMAGE_NAME}:latest"
+                    try {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
+                            sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                            sh "docker push ${IMAGE_NAME}:latest"
+                        }
+                    } catch (Exception e) {
+                        echo "Error pushing to Docker Hub: ${e.getMessage()}"
+                        throw e // Re-throw the exception to fail the build
                     }
                 }
             }
