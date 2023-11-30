@@ -11,7 +11,7 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
     stages {
-        /* stage('Check Changes') {
+        stage('Check Changes') {
             steps {
                 script {
                     def changeLogSets = currentBuild.changeSets
@@ -37,7 +37,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
         stage('Build') {
             when {
                 expression { DOCKERFILE_CHANGED == 'true' || PACKAGE_CHANGED == 'true' }
@@ -55,8 +55,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
-                        app.push("${IMAGE_TAG}")
-                        app.push("latest")
+                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                        sh "docker push ${IMAGE_NAME}:latest"
                     }
                 }
             }
