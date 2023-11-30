@@ -1,4 +1,4 @@
-# Build stage
+# Build stage 
 FROM node:latest as build
 WORKDIR /app
 COPY the-enchiridion/package*.json ./
