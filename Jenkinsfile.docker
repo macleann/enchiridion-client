@@ -41,7 +41,7 @@ pipeline {
             }
             steps {
                 script {
-                    def app = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
