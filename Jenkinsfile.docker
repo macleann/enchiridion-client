@@ -49,13 +49,13 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
+                        withDockerRegistry([ credentialsId: "docker-hub-creds", url: "" ]) {
                             sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
                             sh "docker push ${IMAGE_NAME}:latest"
                         }
                     } catch (Exception e) {
                         echo "Error pushing to Docker Hub: ${e.getMessage()}"
-                        throw e // Re-throw the exception to fail the build
+                        throw e
                     }
                 }
             }
