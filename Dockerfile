@@ -1,5 +1,5 @@
 # Build stage
-FROM node:alpine as build
+FROM node:latest as build
 WORKDIR /app
 COPY the-enchiridion/package*.json ./
 RUN npm ci
