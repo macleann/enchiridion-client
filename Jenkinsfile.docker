@@ -5,29 +5,26 @@ pipeline {
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
         DOCKERFILE_CHANGED = 'false'
         PACKAGE_CHANGED = 'false'
-        TARGET_BRANCH = 'main'
     }
     stages {
         stage('Check Changes') {
             steps {
                 script {
                     def changeLogSets = currentBuild.changeSets
-                    if (env.CHANGE_TARGET == TARGET_BRANCH) {
-                        for (int i = 0; i < changeLogSets.size(); i++) {
-                            def entries = changeLogSets[i].items
-                            for (int j = 0; j < entries.length; j++) {
-                                def entry = entries[j]
-                                echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-                                def files = new ArrayList(entry.affectedFiles)
-                                for (int k = 0; k < files.size(); k++) {
-                                    def file = files[k]
-                                    echo "${file.editType.name} ${file.path}"
-                                    if (file.editType.name == 'edit') {
-                                        if (file.path.endsWith('Dockerfile')) {
-                                            DOCKERFILE_CHANGED = 'true'
-                                        } else if (file.path.endsWith('package.json')) {
-                                            PACKAGE_CHANGED = 'true'
-                                        }
+                    for (int i = 0; i < changeLogSets.size(); i++) {
+                        def entries = changeLogSets[i].items
+                        for (int j = 0; j < entries.length; j++) {
+                            def entry = entries[j]
+                            echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
+                            def files = new ArrayList(entry.affectedFiles)
+                            for (int k = 0; k < files.size(); k++) {
+                                def file = files[k]
+                                echo "${file.editType.name} ${file.path}"
+                                if (file.editType.name == 'edit') {
+                                    if (file.path.endsWith('Dockerfile')) {
+                                        DOCKERFILE_CHANGED = 'true'
+                                    } else if (file.path.endsWith('package.json')) {
+                                        PACKAGE_CHANGED = 'true'
                                     }
                                 }
                             }
