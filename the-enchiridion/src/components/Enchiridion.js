@@ -9,7 +9,6 @@ import { useContext, useEffect } from "react";
 
 export const Enchiridion = () => {
   const { verifyAuthentication } = useContext(AuthContext);
-  // Useless comment
   useEffect(() => {
     verifyAuthentication();
   }, []);
