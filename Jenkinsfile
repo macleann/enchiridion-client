@@ -31,7 +31,7 @@ pipeline {
                 script {
                     // Placeholder for test commands
                     echo 'Running front-end tests...'
-                    // Add your test commands here
+                    // Add test commands here
                 }
             }
         }
@@ -43,8 +43,9 @@ pipeline {
                     sh """
                     az container create --resource-group EnchiridionTV-Production \
                         --name enchiridion-client-${env.BUILD_NUMBER} \
-                        --image macleann/enchiridion-client:${versionTag} \
-                        --environment-variables REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} \
+                        --image macleann/enchiridion-client:latest \
+                        --environment-variables \
+                            REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} \
                         --dns-name-label enchiridion-client-${env.BUILD_NUMBER} \
                         --ports 80
                     """
