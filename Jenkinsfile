@@ -39,16 +39,20 @@ pipeline {
             steps {
                 script {
                     // Azure CLI commands to deploy to ACI
-                    // Ensure Azure CLI is installed and configured on Jenkins agent
-                    sh """
+                    // First, login to Azure
+                    sh 'az login --identity'
+                    // Then deploy to ACI
+                    sh '''
                     az container create --resource-group EnchiridionTV-Production \
-                        --name enchiridion-client-${env.BUILD_NUMBER} \
+                        --name enchiridion-client-$BUILD_NUMBER \
                         --image macleann/enchiridion-client:latest \
                         --environment-variables \
-                            REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} \
-                        --dns-name-label enchiridion-client-${env.BUILD_NUMBER} \
+                            REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID \
+                        --dns-name-label enchiridion-client-$BUILD_NUMBER \
                         --ports 80
-                    """
+                    '''
+                    // Finally, logout of Azure
+                    sh 'az logout'
                 }
             }
         }
