@@ -39,7 +39,9 @@ pipeline {
             steps {
                 script {
                     // Azure CLI commands to deploy to ACI
-                    // Ensure Azure CLI is installed and configured on Jenkins agent
+                    // First, login to Azure
+                    sh 'az login --identity'
+                    // Then deploy to ACI
                     sh '''
                     az container create --resource-group EnchiridionTV-Production \
                         --name enchiridion-client-$BUILD_NUMBER \
@@ -49,6 +51,8 @@ pipeline {
                         --dns-name-label enchiridion-client-$BUILD_NUMBER \
                         --ports 80
                     '''
+                    // Finally, logout of Azure
+                    sh 'az logout'
                 }
             }
         }
