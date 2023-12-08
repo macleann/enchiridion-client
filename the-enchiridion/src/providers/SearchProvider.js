@@ -4,7 +4,7 @@ export const SearchContext = createContext();
 
 export const SearchProvider = (props) => {
     const [searchResults, setSearchResults] = useState([])
-    const url = process.env.API_URL;
+    const url = process.env.REACT_APP_API_URL;
 
     const getAllSearchResults = (searchTerms) => {
         return fetch(`${url}/series?q=${searchTerms}`).then(res => res.json())
