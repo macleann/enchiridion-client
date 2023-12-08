@@ -11,7 +11,8 @@ pipeline {
                 script {
                     // Login to DockerHub and build the image
                     withDockerRegistry([ credentialsId: "docker-hub-creds", url: "" ]) {
-                        def app = docker.build("macleann/enchiridion-client")
+                        // Need to include env variables in build command
+                        def app = docker.build("macleann/enchiridion-client", "--build-arg REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID}", "--build-arg REACT_APP_API_URL=${env.REACT_APP_API_URL}")
 
                         // Tagging with build number and 'latest'
                         def versionTag = "v${env.BUILD_NUMBER}"
@@ -49,9 +50,6 @@ pipeline {
                     az container create --resource-group EnchiridionTV-Production \
                         --name enchiridion-client \
                         --image macleann/enchiridion-client:latest \
-                        --environment-variables \
-                            REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID \
-                            REACT_APP_API_URL=$REACT_APP_API_URL \
                         --dns-name-label enchiridion-client \
                         --ports 80
                     '''
