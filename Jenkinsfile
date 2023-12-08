@@ -3,7 +3,7 @@ pipeline {
     environment {
         // Fetching environment variable from Azure Key Vault
         REACT_APP_GOOGLE_CLIENT_ID = credentials('REACT-APP-GOOGLE-CLIENT-ID')
-        API_URL = credentials('API-URL')
+        REACT_APP_API_URL = credentials('REACT-APP-API-URL')
     }
     stages {
         stage('Build and Push Image') {
@@ -43,7 +43,7 @@ pipeline {
                     // First, login to Azure
                     sh 'az login --identity'
                     // Delete old container if it exists
-                    sh 'az container delete --name enchiridion-client --resource-group EnchiridionTV-Production || true'
+                    sh 'az container delete --name enchiridion-client --resource-group EnchiridionTV-Production --yes'
                     // Then deploy to ACI
                     sh '''
                     az container create --resource-group EnchiridionTV-Production \
@@ -51,7 +51,7 @@ pipeline {
                         --image macleann/enchiridion-client:latest \
                         --environment-variables \
                             REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID \
-                            API_URL=$API_URL \
+                            REACT_APP_API_URL=$REACT_APP_API_URL \
                         --dns-name-label enchiridion-client \
                         --ports 80
                     '''
@@ -75,7 +75,7 @@ pipeline {
 
                     // Update Nginx configuration file with the new IP addresses
                     sh '''
-                    cp /etc/nginx/sites-available/default.template /etc/nginx/sites-available/default
+                    sudo cp /etc/nginx/sites-available/default.template /etc/nginx/sites-available/default
                     sed -i "s/FRONTEND_CONTAINER_IP/${FRONTEND_CONTAINER_IP}/g" /etc/nginx/sites-available/default
                     sed -i "s/BACKEND_CONTAINER_IP/${BACKEND_CONTAINER_IP}/g" /etc/nginx/sites-available/default
                     sudo systemctl restart nginx
