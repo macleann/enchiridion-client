@@ -3,6 +3,7 @@ pipeline {
     environment {
         // Fetching environment variable from Azure Key Vault
         REACT_APP_GOOGLE_CLIENT_ID = credentials('REACT-APP-GOOGLE-CLIENT-ID')
+        API_URL = credentials('API-URL')
     }
     stages {
         stage('Build and Push Image') {
@@ -50,6 +51,7 @@ pipeline {
                         --image macleann/enchiridion-client:latest \
                         --environment-variables \
                             REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID \
+                            API_URL=$API_URL \
                         --dns-name-label enchiridion-client \
                         --ports 80
                     '''
