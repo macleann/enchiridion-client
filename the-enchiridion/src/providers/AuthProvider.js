@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { setLoggedOut } from "../redux/actions/authActions";
 
 export const AuthContext = createContext();
-const url = "http://localhost:8000/";
 
 export const AuthProvider = (props) => {
+  const url = process.env.API_URL;
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const dispatch = useDispatch();
 

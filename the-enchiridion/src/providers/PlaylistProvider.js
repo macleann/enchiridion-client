@@ -4,7 +4,7 @@ export const PlaylistContext = createContext();
 
 export const PlaylistProvider = (props) => {
   const [playlists, setPlaylists] = useState([]);
-  const url = "http://localhost:8000";
+  const url = process.env.API_URL;
 
   const getOptions = {
     headers: {
