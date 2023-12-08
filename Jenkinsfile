@@ -12,7 +12,7 @@ pipeline {
                     // Login to DockerHub and build the image
                     withDockerRegistry([ credentialsId: "docker-hub-creds", url: "" ]) {
                         // Need to include env variables in build command
-                        def app = docker.build("macleann/enchiridion-client", "--build-arg REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID}", "--build-arg REACT_APP_API_URL=${env.REACT_APP_API_URL}")
+                        def app = docker.build("macleann/enchiridion-client", "--build-arg REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID} --build-arg REACT_APP_API_URL=${env.REACT_APP_API_URL} .")
 
                         // Tagging with build number and 'latest'
                         def versionTag = "v${env.BUILD_NUMBER}"
