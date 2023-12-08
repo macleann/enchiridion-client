@@ -12,7 +12,7 @@ export const AuthProvider = (props) => {
 
   const postUserForLogin = async (username, password) => {
     const response = await fetch(
-      url + `login`,
+      `${url}/login`,
       {
         method: "POST",
         headers: {
@@ -35,7 +35,7 @@ export const AuthProvider = (props) => {
   };
 
   const postNewUser = async (user) => {
-    const response = await fetch(url + `register`, {
+    const response = await fetch(`${url}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const AuthProvider = (props) => {
   };
 
   const postGoogleUser = async (codeResponse) => {
-    const response = await fetch(url + `google/login`, {
+    const response = await fetch(`${url}/google/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const AuthProvider = (props) => {
 
   const verifyAuthentication = async () => {
     try {
-      const response = await fetch(url + `verify`, {
+      const response = await fetch(`${url}/verify`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export const AuthProvider = (props) => {
 
   const postLogout = async () => {
     try {
-      const response = await fetch(url + `logout`, {
+      const response = await fetch(`${url}/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
