@@ -55,31 +55,37 @@ pipeline {
                         --dns-name-label enchiridion-client \
                         --ports 80
                     '''
-                    // Obtain the public IP address of the newly created container
+
+                    // Copy a template nginx config file over the existing one
                     sh '''
-                    FRONTEND_CONTAINER_IP=$(az container show --resource-group EnchiridionTV-Production \
+                    sudo cp /etc/nginx/sites-available/default.template /etc/nginx/sites-available/default
+                    '''
+
+                    // Obtain the public IP address of the newly created container and replace the placeholder in the nginx config file
+                    sh '''
+                    FRONTEND_IP=$(az container show --resource-group EnchiridionTV-Production \
                         --name enchiridion-client \
                         --query ipAddress.ip \
                         --output tsv)
+                    sudo sed -i "s/FRONTEND_CONTAINER_IP/${FRONTEND_IP}/g" /etc/nginx/sites-available/default
                     '''
 
-                    // Obtain the public IP address of the backend container
+                    // Obtain the public IP address of the backend container and replace the placeholder in the nginx config file
                     sh '''
-                    BACKEND_CONTAINER_IP=$(az container show --resource-group EnchiridionTV-Production \
+                    BACKEND_IP=$(az container show --resource-group EnchiridionTV-Production \
                         --name enchiridion-server \
                         --query ipAddress.ip \
                         --output tsv)
+                    sudo sed -i "s/BACKEND_CONTAINER_IP/${BACKEND_IP}/g" /etc/nginx/sites-available/default
                     '''
-                    // Finally, logout of Azure
-                    sh 'az logout'
 
-                    // Update Nginx configuration file with the new IP addresses
+                    // Restart nginx
                     sh '''
-                    sudo cp /etc/nginx/sites-available/default.template /etc/nginx/sites-available/default
-                    sed -i "s/FRONTEND_CONTAINER_IP/${FRONTEND_CONTAINER_IP}/g" /etc/nginx/sites-available/default
-                    sed -i "s/BACKEND_CONTAINER_IP/${BACKEND_CONTAINER_IP}/g" /etc/nginx/sites-available/default
                     sudo systemctl restart nginx
                     '''
+
+                    // Finally, logout of Azure
+                    sh 'az logout'
                 }
             }
         }
