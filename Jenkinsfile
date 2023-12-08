@@ -66,10 +66,9 @@ pipeline {
                     // Obtain the public IP address of the backend container
                     sh '''
                     BACKEND_CONTAINER_IP=$(az container show --resource-group EnchiridionTV-Production \
-                        --name enchiridion-backend \
+                        --name enchiridion-server \
                         --query ipAddress.ip \
                         --output tsv)
-                    || true
                     '''
                     // Finally, logout of Azure
                     sh 'az logout'
