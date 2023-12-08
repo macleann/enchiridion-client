@@ -4,7 +4,7 @@ export const SeasonContext = createContext();
 
 export const SeasonProvider = (props) => {
     const [seasons, setSeasons] = useState([]);
-    const url = "http://localhost:8000";
+    const url = process.env.API_URL;
 
     const getAllSeasons = (resultId) => {
         return fetch(`${url}/seasons?series_id=${resultId}`).then((res) => res.json());
