@@ -10,11 +10,12 @@ pipeline {
         stage('Build React App') {
             steps {
                 script {
-                    // Navigate to the front-end directory
-                    sh 'cd the-enchiridion'
-                    // Install dependencies and build the React app
-                    sh 'npm ci'
-                    sh 'REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} REACT_APP_API_URL=${REACT_APP_API_URL} npm run build'
+                    // Navigate to the front-end directory and install dependencies and build the React app
+                    sh '''
+                        cd the-enchiridion
+                        npm ci
+                        REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} REACT_APP_API_URL=${REACT_APP_API_URL} npm run build
+                    '''
                 }
             }
         }
@@ -31,7 +32,10 @@ pipeline {
             steps {
                 script {
                     // Transfer the build directory to the server
-                    sh 'cp -r build/* /var/www/enchiridion'
+                    sh '''
+                        cd ${WORKSPACE}/the-enchiridion
+                        cp -r build/* /var/www/enchiridion
+                    '''
                 }
             }
         }
