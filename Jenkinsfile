@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    tools { nodejs 'node_21.4'}
     environment {
         // Fetching environment variable from Azure Key Vault
         REACT_APP_GOOGLE_CLIENT_ID = credentials('REACT-APP-GOOGLE-CLIENT-ID')
