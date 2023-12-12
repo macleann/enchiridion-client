@@ -10,6 +10,8 @@ pipeline {
         stage('Build React App') {
             steps {
                 script {
+                    // Navigate to the front-end directory
+                    sh 'cd the-enchiridion'
                     // Install dependencies and build the React app
                     sh 'npm ci'
                     sh 'REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} REACT_APP_API_URL=${REACT_APP_API_URL} npm run build'
