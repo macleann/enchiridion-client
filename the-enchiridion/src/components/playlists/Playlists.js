@@ -77,7 +77,14 @@ export const Playlists = () => {
     // Spinning wheel loading animation
     return <Loading />;
   } else if (playlists.length === 0 || playlists.detail === "Invalid token.") {
-    return <h1 className="my-4 text-2xl">No playlists found</h1>;
+    return (
+      <>
+        <div className="flex justify-end">
+          {createPlaylistButton()}
+        </div>
+        <h1 className="my-4 text-2xl">No playlists found</h1>
+      </>
+    );
   }
   return (
     <>
