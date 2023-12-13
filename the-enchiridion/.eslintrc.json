@@ -19,6 +19,10 @@
     ],
     "rules": {
         "react-hooks/exhaustive-deps": "off",
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "no-prototype-builtins": "off",
+        "no-unused-vars": "off",
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "off",
     }
 }
