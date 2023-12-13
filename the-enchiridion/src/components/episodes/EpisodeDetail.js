@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EpisodeContext } from "../../providers/EpisodeProvider";
-import { useScreenSize } from "../../utils/useScreenSize";
 import { Loading } from "../svgs/Loading.js";
 
 
@@ -9,7 +8,6 @@ export const EpisodeDetail = () => {
     const { episode, setEpisode, getEpisodeByNumberFromTMDB, getEpisodeByIdFromLocalDB } = useContext(EpisodeContext);
     const { playlistId, episodeId, resultId, seasonNumber, episodeNumber } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    const { isMobile } = useScreenSize();
     const episodeimgURL = "https://www.themoviedb.org/t/p/w454_and_h254_bestv2"
 
     useEffect(() => {
@@ -61,7 +59,7 @@ export const EpisodeDetail = () => {
           <h2 className="mt-4 text-3xl text-center">{episode?.name}</h2>
           <div className="flex flex-col md:flex-row lg:w-2/3 justify-center items-center mt-4 mx-auto">
             <div className="w-full md:w-1/2 md:mr-4 md:ml-8">
-              <img className="" src={`${episodeimgURL}${episode?.still_path}`} />
+              <img className="" src={`${episodeimgURL}${episode?.still_path}`} alt={`A still from ${episode?.name}`}/>
             </div>
             <div className="flex-col md:w-1/2 justify-start md:ml-4 md:mr-8 py-10 text-gray-500">
               <div className="mt-4 md:mt-0">{episode.overview}</div>

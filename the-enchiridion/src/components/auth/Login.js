@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
@@ -45,29 +45,29 @@ export const Login = () => {
       : "";
   };
 
+  const handleGoogleAuth = useCallback(async (code) => {
+    try {
+      const response = await postGoogleUser(code);
+      if (response && response.id) {
+        dispatch(setLoggedIn(true));
+        dispatch(setUserData(response.id));
+        dispatch(showSnackbar("Logged in successfully", "success"));
+        navigate("/");
+      } else {
+        dispatch(showSnackbar("Invalid login credentials", "error"));
+      }
+    } catch (err) {
+      dispatch(showSnackbar("An error occurred while logging in", "error"));
+    }
+  }, [dispatch, navigate, postGoogleUser]);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-
     if (code) {
-      postGoogleUser(code)
-        .then((response) => {
-          if (response && response.id) {
-            console.log(response)
-            dispatch(setLoggedIn(true));
-            dispatch(setUserData(response.id));
-            dispatch(showSnackbar("Logged in successfully", "success"));
-            navigate("/");
-          } else {
-            dispatch(showSnackbar("Invalid login credentials", "error"));
-          }
-        })
-        .catch((err) => {
-          dispatch(showSnackbar("An error occurred while logging in", "error"));
-          console.log(err);
-        });
+      handleGoogleAuth(code);
     }
-  }, []);
+  }, [handleGoogleAuth]);
   
 
   const loginWithGoogle = useGoogleLogin({

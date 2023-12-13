@@ -6,12 +6,16 @@ import { ApplicationViews } from "../views/ApplicationViews";
 import { GlobalSnackbar } from "../utils/GlobalSnackbar";
 import { AuthContext } from "../providers/AuthProvider";
 import { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export const Enchiridion = () => {
   const { verifyAuthentication } = useContext(AuthContext);
+  const currentUser = useSelector((state) => state.auth.userData);
   useEffect(() => {
-    verifyAuthentication();
-  }, []);
+    if (!currentUser.id) {
+      verifyAuthentication();
+    }
+  }, [currentUser.id, verifyAuthentication]);
 
   return (
     <>
