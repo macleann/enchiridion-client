@@ -7,6 +7,7 @@ The Enchiridion Client is a front-end client application for The Enchiridion, a 
 - Ability to create, view, update, and delete custom playlists.
 - Sleek user interface designed with Tailwind CSS and Material UI.
 - Browsing functionality for shows, seasons, and episodes, made possible by interfacing with the TMDB API.
+- Hosting via Azure
 
 ## Getting Started
 
