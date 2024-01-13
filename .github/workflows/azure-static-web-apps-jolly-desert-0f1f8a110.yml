@@ -9,10 +9,6 @@ on:
     branches:
       - prod
 
-env:
-  REACT_APP_GOOGLE_CLIENT_ID: 115078931939-eoj0gcm7iail2dfu94b02nsuh9gffm7o.apps.googleusercontent.com
-  REACT_APP_API_URL: http://api.enchiridion.tv
-
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
