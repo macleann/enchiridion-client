@@ -6,6 +6,9 @@
     },
     "globalHeaders": {
         "Access-Control-Allow-Origin": "https://api.enchiridion.tv",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "Authorization, Content-Type",
+        "Referrer-Policy": "no-referrer"
     }
   }
