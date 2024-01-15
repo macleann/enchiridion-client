@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useScreenSize } from "../../utils/useScreenSize.js";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { PlaylistCard } from "./PlaylistCard";
 import { Loading } from "../svgs/Loading.js";
@@ -12,32 +11,26 @@ export const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filterToggle, setFilterToggle] = useState(false);
   const navigate = useNavigate();
-  const { isMobile } = useScreenSize();
   const currentUser = useSelector((state) => state.auth.userData);
-
-  // Get all playlists on page load
-  useEffect(() => {
-    getAllPlaylists()
-      .then((res) => setPlaylists(res))
-      .then(() => {
-        setTimeout(() => setIsLoading(false), 500);
-      });
-  }, []);
 
   // Get user playlists if filterToggle is true
   useEffect(() => {
     if (filterToggle) {
-      getUserPlaylists()
-        .then((res) => setPlaylists(res))
-        .then(() => {
-          setTimeout(() => setIsLoading(false), 500);
-        });
+      try {
+        getUserPlaylists()
+          .then((res) => setPlaylists(res))
+          .then(() => setIsLoading(false));
+      } catch (err) {
+        console.error(err);
+      }
     } else {
-      getAllPlaylists()
-        .then((res) => setPlaylists(res))
-        .then(() => {
-          setTimeout(() => setIsLoading(false), 500);
-        });
+      try {
+        getAllPlaylists()
+          .then((res) => setPlaylists(res))
+          .then(() => setIsLoading(false));
+      } catch (err) {
+        console.error(err);
+      }
     }
   }, [filterToggle]);
 

@@ -21,9 +21,8 @@ export const Login = () => {
     try {
       postUserForLogin(username, password).then((response) => {
         if (response && response.id) {
-          console.log(response)
           dispatch(setLoggedIn(true));
-          dispatch(setUserData(response.id));
+          dispatch(setUserData({id: response.id}));
           dispatch(showSnackbar("Logged in successfully", "success"));
           navigate("/");
         } else {
