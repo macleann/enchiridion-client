@@ -14,6 +14,7 @@ export const Login = () => {
   const { postUserForLogin, postGoogleUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const url = process.env.REACT_APP_URL;
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -72,7 +73,7 @@ export const Login = () => {
   const loginWithGoogle = useGoogleLogin({
     flow: 'auth-code',
     ux_mode: 'redirect',
-    redirect_uri: 'http://localhost:3000/login',
+    redirect_uri: `${url}/login`,
   });
 
   return (
