@@ -30,7 +30,7 @@ export const Register = () => {
     return postNewUser(user).then((createdUser) => {
       if (createdUser && createdUser.id) {
         dispatch(setLoggedIn(true));
-        dispatch(setUserData(createdUser));
+        dispatch(setUserData({ id: createdUser.id }));
         dispatch(showSnackbar("Registered successfully", "success"));
         navigate("/");
       } else if (createdUser.hasOwnProperty("error")) {
@@ -66,7 +66,7 @@ export const Register = () => {
         const response = await postGoogleUser(code);
         if (response && response.id) {
           dispatch(setLoggedIn(true));
-          dispatch(setUserData(response.id));
+          dispatch(setUserData({ id: response.id }));
           dispatch(showSnackbar("Logged in successfully", "success"));
           navigate("/");
         } else {

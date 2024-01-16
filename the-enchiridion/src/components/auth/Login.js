@@ -51,7 +51,7 @@ export const Login = () => {
         const response = await postGoogleUser(code);
         if (response && response.id) {
           dispatch(setLoggedIn(true));
-          dispatch(setUserData(response.id));
+          dispatch(setUserData({ id: response.id }));
           dispatch(showSnackbar("Logged in successfully", "success"));
           navigate("/");
         } else {
