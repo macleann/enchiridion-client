@@ -90,7 +90,7 @@ export const Register = () => {
   const loginWithGoogle = useGoogleLogin({
     flow: "auth-code",
     ux_mode: "redirect",
-    redirect_uri: `${url}/login`,
+    redirect_uri: `${url}/register`,
   });
 
   return (
