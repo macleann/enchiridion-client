@@ -13,14 +13,10 @@ export const Home = () => {
   useEffect(() => {
     getAllPlaylists()
       .then((res) => setPlaylists(res))
-      .then(() => {
-        setTimeout(() => setIsLoading(false), 500);
-      });
+      .then(() => setIsLoading(false));
     getTrendingPlaylists(7)
       .then((res) => setTrendingPlaylists(res))
-      .then(() => {
-        setTimeout(() => setIsLoading(false), 500);
-      });
+      .then(() => setIsLoading(false));
   }, []);
 
   if (isLoading) {
