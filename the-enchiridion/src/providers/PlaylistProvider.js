@@ -71,6 +71,24 @@ export const PlaylistProvider = (props) => {
     ).catch((err) => console.log(err));
   };
 
+  const likePlaylist = (playlistId) => {
+    return fetch(
+      `${url}/likes`,
+      postPutDeleteOptions("POST", 
+        {
+          playlist_id: playlistId,
+        }
+      )
+    ).catch((err) => console.log(err));
+  };
+
+  const unlikePlaylist = (playlistId) => {
+    return fetch(
+      `${url}/likes/${playlistId}`,
+      postPutDeleteOptions("DELETE")
+    ).catch((err) => console.log(err));
+  }
+
   return (
     <PlaylistContext.Provider
       value={{
@@ -83,6 +101,8 @@ export const PlaylistProvider = (props) => {
         createPlaylist,
         updatePlaylist,
         deletePlaylist,
+        likePlaylist,
+        unlikePlaylist
       }}
     >
       {props.children}
