@@ -1,14 +1,17 @@
 import { useState, useContext, useEffect } from "react";
-import { useScreenSize } from "../../utils/useScreenSize.js";
+import { useSelector, useDispatch } from "react-redux";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { PlaylistCard } from "../playlists/PlaylistCard";
 import { Loading } from "../svgs/Loading.js";
+import { trigger } from "../../redux/actions/utilityActions.js";
 
 export const Home = () => {
   const { playlists, setPlaylists, getAllPlaylists, getTrendingPlaylists } =
     useContext(PlaylistContext);
   const [trendingPlaylists, setTrendingPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const triggerState = useSelector((state) => state.utility.trigger);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getAllPlaylists()
@@ -18,6 +21,16 @@ export const Home = () => {
       .then((res) => setTrendingPlaylists(res))
       .then(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (triggerState === "update") {
+      getAllPlaylists()
+        .then((res) => setPlaylists(res))
+      getTrendingPlaylists(7)
+        .then((res) => setTrendingPlaylists(res))
+      dispatch(trigger(null))
+    }
+  }, [triggerState]);
 
   if (isLoading) {
     // Spinning wheel loading animation

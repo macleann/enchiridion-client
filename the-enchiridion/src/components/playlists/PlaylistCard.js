@@ -6,6 +6,7 @@ import { LikeIcon } from "../svgs/LikeIcon";
 import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { useSelector, useDispatch } from "react-redux";
 import { showSnackbar } from "../../redux/actions/snackbarActions";
+import { trigger } from "../../redux/actions/utilityActions.js";
 
 export const PlaylistCard = ({ playlist }) => {
   const { likePlaylist, unlikePlaylist } = useContext(PlaylistContext)
@@ -35,6 +36,7 @@ export const PlaylistCard = ({ playlist }) => {
         setLikesCount(likesCount - 1)
         playlist.likes_count = likesCount - 1;
         playlist.is_liked = false
+        dispatch(trigger("update"))
         return playlist
       }
       else {
@@ -42,6 +44,7 @@ export const PlaylistCard = ({ playlist }) => {
         setLikesCount(likesCount + 1)
         playlist.likes_count = likesCount + 1;
         playlist.is_liked = true
+        dispatch(trigger("update"))
         return playlist
       }
     }
