@@ -72,7 +72,7 @@ export const NavBar = () => {
             alt="Enchiridion"
           />
         </Link>
-        <button onClick={toggleDrawer(true)} className="md:hidden">
+        <button id="hamburgerIcon" onClick={toggleDrawer(true)} className="md:hidden">
           {/* Hamburger Icon */}
           <svg
             className="w-6 h-6"
@@ -89,7 +89,7 @@ export const NavBar = () => {
             ></path>
           </svg>
         </button>
-        <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
+        <Drawer id="hamburgerMenu" anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
           <div role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
             <List>
               {navActions.map((item, index) => (

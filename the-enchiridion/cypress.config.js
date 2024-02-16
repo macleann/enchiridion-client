@@ -6,5 +6,6 @@ module.exports = defineConfig({
       framework: "create-react-app",
       bundler: "webpack",
     },
-  },
+    specPattern: 'src/**/*.cy.{js,jsx,ts,tsx}'
+  }
 });
