@@ -1,5 +1,3 @@
-import { store } from '../../src/redux/store';
-import { setLoggedIn, setUserData } from '../../src/redux/actions/authActions';
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -12,10 +10,7 @@ import { setLoggedIn, setUserData } from '../../src/redux/actions/authActions';
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', () => {
-    store.dispatch(setLoggedIn(true));
-    store.dispatch(setUserData({ id: 1 }));
-  });
+// Cypress.Commands.add('login', (email, password) => { ... })
 //
 //
 // -- This is a child command --

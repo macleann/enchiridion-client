@@ -7,7 +7,6 @@ export const AuthContext = createContext();
 
 export const AuthProvider = (props) => {
   const url = process.env.REACT_APP_API_URL;
-  console.log(url)
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const dispatch = useDispatch();
 
