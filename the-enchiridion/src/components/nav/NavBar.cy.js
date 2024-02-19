@@ -1,22 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store';
-import { AuthProvider } from '../../providers/AuthProvider';
 import { NavBar } from './NavBar';
 
 describe('NavBar Component', () => {
   it('Should render the NavBar component and handle login button click', () => {
     // Mount the component inside a Router and wrap it with Provider
-    cy.mount(
-      <Provider store={store}>
-        <Router>
-          <AuthProvider>
-            <NavBar />
-          </AuthProvider>
-        </Router>
-      </Provider>
-    );
+    cy.mount(<NavBar />);
 
     // Check if the NavBar is rendered
     cy.get('#navBar').should('exist');
@@ -31,15 +19,7 @@ describe('NavBar Component', () => {
   it('Should show the logout button when logged in', () => {
     // Bypasses the login process and sets a user id and logged in state in global state
     cy.login();
-    cy.mount(
-      <Provider store={store}>
-        <Router>
-          <AuthProvider>
-            <NavBar />
-          </AuthProvider>
-        </Router>
-      </Provider>
-    );
+    cy.mount(<NavBar />);
 
     cy.get('#navBar').should('exist');
 
@@ -48,5 +28,10 @@ describe('NavBar Component', () => {
     cy.intercept('POST', '/logout*', {statusCode: 200})
     // Assert that the logout button is present
     cy.get('#hamburgerMenu').contains('Logout').should('exist').click();
+
+    // Assert that the user is logged out
+    cy.get('#hamburgerMenu').contains('Login').should('exist');
+    // Assert that the state.auth.isLoggedIn is false
+    cy.window().its('store').invoke('getState').its('auth').its('isLoggedIn').should('be.false');
   });
 });

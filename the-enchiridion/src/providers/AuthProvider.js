@@ -2,6 +2,7 @@ import { createContext } from "react";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useDispatch } from "react-redux";
 import { setLoggedOut } from "../redux/actions/authActions";
+import { showSnackbar } from "../redux/actions/snackbarActions";
 
 export const AuthContext = createContext();
 
@@ -11,46 +12,47 @@ export const AuthProvider = (props) => {
   const dispatch = useDispatch();
 
   const postUserForLogin = async (username, password) => {
-    const response = await fetch(
-      `${url}/login`,
-      {
+    try {
+      const response = await fetch(
+        `${url}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        }
+      );
+
+      const parsedResponse = response.json()
+      return parsedResponse;
+    } catch (error) {
+      dispatch(showSnackbar("An error occurred while logging in", "error"));
+      console.error("There was an error logging in:", error);
+    }
+  };
+
+  const postNewUser = async (user) => {
+    try {
+      const response = await fetch(`${url}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      }
-    );
+        body: JSON.stringify(user),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to login");
+      const parsedResponse = response.json()
+      return parsedResponse;
+    } catch (error) {
+      dispatch(showSnackbar("An error occurred while registering", "error"));
+      console.error("An error occurred while registering:", error);
     }
-    const parsedResponse = response.json()
-    console.log(parsedResponse)
-    return parsedResponse;
-  };
-
-  const postNewUser = async (user) => {
-    const response = await fetch(`${url}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(user),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to register");
-    }
-
-    const parsedResponse = response.json()
-    console.log(parsedResponse)
-    return parsedResponse;
   };
 
   const postGoogleUser = async (codeResponse) => {
@@ -67,7 +69,6 @@ export const AuthProvider = (props) => {
       throw new Error("Failed to login with Google");
     }
     const parsedResponse = response.json()
-    console.log(parsedResponse)
     return parsedResponse;
   };
 
@@ -85,7 +86,7 @@ export const AuthProvider = (props) => {
         dispatch({ type: "SET_LOGGED_IN", payload: true });
         dispatch({ type: "SET_USER_DATA", payload: parsedResponse });
       } else {
-        dispatch(setLoggedOut(false));
+        dispatch(setLoggedOut());
       }
     } catch (error) {
       console.error("There was an error verifying the token:", error);
@@ -104,7 +105,6 @@ export const AuthProvider = (props) => {
       return response;
     } catch (error) {
       console.error("There was an error logging out:", error);
-      dispatch(setLoggedOut(false));
     }
   };
 

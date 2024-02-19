@@ -18,7 +18,7 @@ export const GlobalSnackbar = () => {
   };
 
   return (
-    <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}} TransitionComponent={SlideTransition}>
+    <Snackbar id='snackbar' open={isOpen} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}} TransitionComponent={SlideTransition}>
       <MuiAlert onClose={handleClose} severity={severity} sx={{ width: "500%" }}>
         {message}
       </MuiAlert>

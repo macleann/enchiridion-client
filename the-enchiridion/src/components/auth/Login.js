@@ -130,6 +130,7 @@ export const Login = () => {
               </label>
             </div>
             <button
+              id="loginButton"
               type="submit"
               className={
                 !username || !password
@@ -152,6 +153,7 @@ export const Login = () => {
             </div>
             <div className="divider my-2" />
             <button
+              id="googleLoginButton"
               type="button"
               className="flex justify-center items-center py-2 px-4 backdrop-blur-md bg-white/30 font-semibold rounded-md border"
               onClick={loginWithGoogle}

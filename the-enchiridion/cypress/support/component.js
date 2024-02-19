@@ -20,8 +20,39 @@ import './commands'
 // require('./commands')
 
 import { mount } from 'cypress/react18'
+import { Provider } from 'react-redux'
+import { store } from '../../src/redux/store'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AuthProvider } from '../../src/providers/AuthProvider'
+import { EpisodeProvider } from '../../src/providers/EpisodeProvider'
+import { PlaylistProvider } from '../../src/providers/PlaylistProvider'
+import { SearchProvider } from '../../src/providers/SearchProvider'
+import { SeasonProvider } from '../../src/providers/SeasonProvider'
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add('mount', (component, options = {}) => {
+    // Use the default store if one is not provided
+    const { reduxStore = store, ...mountOptions } = options
+    // expose store to the window object
+    window.store = reduxStore
+  
+    const wrapped = <Provider store={reduxStore}>
+        <Router>
+            <AuthProvider>
+                <EpisodeProvider>
+                    <PlaylistProvider>
+                        <SearchProvider>
+                            <SeasonProvider>
+                                {component}
+                            </SeasonProvider>
+                        </SearchProvider>
+                    </PlaylistProvider>
+                </EpisodeProvider>
+            </AuthProvider>
+        </Router>
+    </Provider>
+  
+    return mount(wrapped, mountOptions)
+  })
 
 // Example use:
 // cy.mount(<MyComponent />)
