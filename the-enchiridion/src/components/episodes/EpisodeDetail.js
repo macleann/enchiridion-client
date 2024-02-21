@@ -56,14 +56,14 @@ export const EpisodeDetail = () => {
           {playlistId ? "Back to playlist" : "Back to season "}
         </Link>
         <div>
-          <h2 className="mt-4 text-3xl text-center">{episode?.name}</h2>
+          <h2 id="episodeTitle" className="mt-4 text-3xl text-center">{episode?.name}</h2>
           <div className="flex flex-col md:flex-row lg:w-2/3 justify-center items-center mt-4 mx-auto">
             <div className="w-full md:w-1/2 md:mr-4 md:ml-8">
-              <img className="" src={`${episodeimgURL}${episode?.still_path}`} alt={`A still from ${episode?.name}`}/>
+              <img id="episodeImg" src={`${episodeimgURL}${episode?.still_path}`} alt={`A still from ${episode?.name}`}/>
             </div>
             <div className="flex-col md:w-1/2 justify-start md:ml-4 md:mr-8 py-10 text-gray-500">
-              <div className="mt-4 md:mt-0">{episode.overview}</div>
-              <div className="mt-4 text-center">
+              <div id="episodeOverview" className="mt-4 md:mt-0">{episode.overview}</div>
+              <div id="episodeInfo" className="mt-4 text-center">
                 Air Date: {displayAirDate(episode)} • Runtime:{" "}
                 {episode?.runtime} minutes
               </div>
