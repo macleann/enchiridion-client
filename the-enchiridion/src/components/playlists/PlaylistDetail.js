@@ -53,7 +53,7 @@ export const PlaylistDetail = () => {
     }
     return (
       <>
-        <Link className="ml-4 underline" to={`/playlists`}>
+        <Link id="playlist-slug" className="ml-4 underline" to={`/playlists`}>
           Back to playlists
         </Link>
         <h2 className="text-3xl text-center mb-6">{playlist.name}</h2>

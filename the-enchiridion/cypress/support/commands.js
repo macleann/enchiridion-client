@@ -12,9 +12,12 @@ import { setLoggedIn, setUserData } from '../../src/redux/actions/authActions';
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (id) => {
+    if (!id) {
+      id = 1;
+    }
     store.dispatch(setLoggedIn(true));
-    store.dispatch(setUserData({ id: 1 }));
+    store.dispatch(setUserData({ id: id }));
   });
 //
 //
