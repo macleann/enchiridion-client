@@ -58,13 +58,12 @@ export const PlaylistCard = ({ playlist }) => {
     <div className="card-playlists">
       <div className="absolute top-0 right-2 flex">
           <div className="h-4 mt-2 mr-1 text-sm text-gray-500">{likesCount}</div>
-          <div onClick={() => handleLike(playlist)} className="mt-2"><LikeIcon fill={playlist.is_liked ? "rgb(107 114 128)" : "rgb(156 163 175)" }/></div>
+          <div onClick={() => handleLike(playlist)} className="mt-2 w-4"><LikeIcon fill={playlist.is_liked ? "rgb(107 114 128)" : "rgb(156 163 175)" }/></div>
       </div>
       <Link to={`/playlists/${playlist.id}`}>
-        
         <div className="my-3">{playlistImage}</div>
         <div>
-          <div className="my-2 text-lg md:text-xl text-center">{playlist.name}</div>
+          <div id="playlist-title" className="my-2 text-lg md:text-xl text-center">{playlist.name}</div>
           {isMobile ? null : (
             <div className="mx-4 my-2 text-center text-gray-500">
               {playlist.description.length > 100 ? (
