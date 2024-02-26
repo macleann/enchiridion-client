@@ -1,5 +1,6 @@
 import { store } from '../../src/redux/store';
 import { setLoggedIn, setUserData } from '../../src/redux/actions/authActions';
+import '@4tw/cypress-drag-drop'
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
