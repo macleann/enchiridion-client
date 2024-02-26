@@ -98,6 +98,7 @@ export const SearchBar = () => {
               {searchResults.map((result) => {
                 return (
                   <Link
+                    id={`search-result-${result.id}`}
                     to={`/search/${result.id}`}
                     key={result.id}
                     className="card-search-result"
