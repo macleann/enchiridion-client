@@ -50,7 +50,7 @@ export const SeasonDetail = () => {
   }
   return (
     <>
-    <Link className="ml-4 underline" to={`/search/${resultId}`}>Back to show</Link>
+    <Link id="link-to-search" className="ml-4 underline" to={`/search/${resultId}`}>Back to show</Link>
       <h2 className="text-3xl text-center mb-6">{season.name}</h2>
       <div className="flex flex-col items-center">
         <div className="flex justify-center my-2 mx-8 md:w-full">

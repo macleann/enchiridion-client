@@ -43,8 +43,9 @@ export const Seasons = ({ seasons }) => {
             { month: "short", year: "numeric" }
           );
           return (
-            <div key={`season--${season.id}`} className="card">
+            <div key={`season--${season.id}`} id={`season-${season.id}-card`} className="card">
               <Link
+                id={`season-${season.season_number}-link`}
                 to={`season/${season.season_number}`}
                 className="md:flex md:h-full w-full md:items-center"
               >
