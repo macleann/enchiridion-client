@@ -26,22 +26,23 @@ export const Register = () => {
   const dispatch = useDispatch();
   const url = process.env.REACT_APP_URL;
 
-  const registerNewUser = () => {
-    return postNewUser(user).then((createdUser) => {
-      if (createdUser && createdUser.id) {
-        dispatch(setLoggedIn(true));
-        dispatch(setUserData({ id: createdUser.id }));
-        dispatch(showSnackbar("Registered successfully", "success"));
-        navigate("/");
-      } else if (createdUser.hasOwnProperty("error")) {
-        window.alert(createdUser.error);
-      }
-    });
-  };
-
   const handleRegister = (e) => {
     e.preventDefault();
-    return registerNewUser();
+
+    try {
+      postNewUser(user).then((response) => {
+        if (response && response.id) {
+          dispatch(setLoggedIn(true));
+          dispatch(setUserData({ id: response.id }));
+          dispatch(showSnackbar("Registered successfully", "success"));
+          navigate("/");
+        } else {
+          dispatch(showSnackbar("An error occurred while registering", "error"));
+        }
+      });
+    } catch (error) {
+      dispatch(showSnackbar("An error occurred while registering", "error"));
+    }
   };
 
   const updateNewUser = (evt) => {

@@ -15,7 +15,7 @@ export const authReducer = (state = initialState, action) => {
         case SET_LOGGED_OUT:
             return {
                 ...state,
-                isLoggedIn: action.payload,
+                isLoggedIn: false,
                 userData: {},
             };
         case SET_USER_DATA:

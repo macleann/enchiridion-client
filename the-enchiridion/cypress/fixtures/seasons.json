@@ -1,0 +1,101 @@
+[
+    {
+        "id": 26867,
+        "air_date": "2008-12-07",
+        "name": "Specials",
+        "overview": "",
+        "season_number": 0,
+        "episode_count": 16,
+        "poster_path": "/1ZLufRlGhGH1zGizhnRIzkuTenW.jpg"
+    },
+    {
+        "id": 26868,
+        "air_date": "2010-04-05",
+        "name": "Season 1",
+        "overview": "",
+        "season_number": 1,
+        "episode_count": 26,
+        "poster_path": "/toCgxkrhqs1UG1j2L1G5gf4eqnp.jpg"
+    },
+    {
+        "id": 26869,
+        "air_date": "2010-10-11",
+        "name": "Season 2",
+        "overview": "",
+        "season_number": 2,
+        "episode_count": 26,
+        "poster_path": "/3KZOhPKh9GdXdVKKH3wLwbpQBdo.jpg"
+    },
+    {
+        "id": 26870,
+        "air_date": "2011-07-11",
+        "name": "Season 3",
+        "overview": "",
+        "season_number": 3,
+        "episode_count": 26,
+        "poster_path": "/1ECczcYio4VBesP78CGryXuBnrY.jpg"
+    },
+    {
+        "id": 26871,
+        "air_date": "2012-04-02",
+        "name": "Season 4",
+        "overview": "",
+        "season_number": 4,
+        "episode_count": 26,
+        "poster_path": "/q7HOlCRVnEgtfngheSyiOCWOpyE.jpg"
+    },
+    {
+        "id": 26872,
+        "air_date": "2012-11-12",
+        "name": "Season 5",
+        "overview": "",
+        "season_number": 5,
+        "episode_count": 52,
+        "poster_path": "/w52JRYnBjPjuDU7IWPfgaj5GxF.jpg"
+    },
+    {
+        "id": 61205,
+        "air_date": "2014-04-21",
+        "name": "Season 6",
+        "overview": "",
+        "season_number": 6,
+        "episode_count": 43,
+        "poster_path": "/7leOGmA0GWatt0758KaKbel7UXT.jpg"
+    },
+    {
+        "id": 71764,
+        "air_date": "2015-11-02",
+        "name": "Season 7",
+        "overview": "Main story arcs for this season include Bubblegum adjusting to life in exile and eventually reclaiming the Candy Kingdom crown, and Marceline coming to terms with her vampiric nature.",
+        "season_number": 7,
+        "episode_count": 26,
+        "poster_path": "/rnEgIlAs64k3YiqMw6Nwf2nrufC.jpg"
+    },
+    {
+        "id": 84341,
+        "air_date": "2016-03-26",
+        "name": "Season 8",
+        "overview": "",
+        "season_number": 8,
+        "episode_count": 27,
+        "poster_path": "/zIDoU6YZXE3oz9MNBjE2Ld94Xuu.jpg"
+    },
+    {
+        "id": 90580,
+        "air_date": "2017-04-21",
+        "name": "Season 9",
+        "overview": "",
+        "season_number": 9,
+        "episode_count": 14,
+        "poster_path": "/tGSrUnb9P3ZOEdhz1SiplX1Ceyu.jpg"
+    },
+    {
+        "id": 97766,
+        "air_date": "2017-09-17",
+        "name": "Season 10",
+        "overview": "The tenth and final season of Adventure Time.",
+        "season_number": 10,
+        "episode_count": 13,
+        "poster_path": "/w8mYplN3ysIJ5DIYYgmfGTvuNzd.jpg"
+    }
+]

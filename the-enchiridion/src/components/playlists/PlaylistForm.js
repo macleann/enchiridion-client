@@ -309,7 +309,7 @@ export const PlaylistForm = () => {
                   <option value="0">Select a show</option>
                   {searchResults.map((result) => {
                     return (
-                      <option key={result.id} value={result.id}>
+                      <option id={result.id} key={result.id} value={result.id}>
                         {result.name} ({displayAirDate(result)})
                       </option>
                     );
@@ -342,7 +342,7 @@ export const PlaylistForm = () => {
                 <option value="0">Select a season</option>
                 {seasons.map((season) => {
                   return (
-                    <option key={season.id} value={season.id}>
+                    <option id={season.id} key={season.id} value={season.id}>
                       {season.name}
                     </option>
                   );
@@ -379,6 +379,7 @@ export const PlaylistForm = () => {
               />
             </fieldset>
             <button
+              id="save-playlist"
               className={
                 !playlist.name || !playlist.description || !playlist.episodes
                   ? "button-primary-disabled"
@@ -389,6 +390,7 @@ export const PlaylistForm = () => {
                   ? handleDisabledSave
                   : handleSavePlaylist
               }
+              disabled={!playlist.name || !playlist.description || !playlist.episodes}
             >
               Save Playlist
             </button>

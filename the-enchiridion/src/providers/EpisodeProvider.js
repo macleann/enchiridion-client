@@ -6,12 +6,24 @@ export const EpisodeProvider = (props) => {
     const [episode, setEpisode] = useState({});
     const url = process.env.REACT_APP_API_URL;
 
-    const getEpisodeByNumberFromTMDB = (resultId, seasonNumber, episodeNumber) => {
-        return fetch(`${url}/episodes/tmdb_single_episode?series_id=${resultId}&season_number=${seasonNumber}&episode_number=${episodeNumber}`).then((res) => res.json());
+    const getEpisodeByNumberFromTMDB = async (resultId, seasonNumber, episodeNumber) => {
+        try {
+            const response = await fetch(`${url}/episodes/tmdb_single_episode?series_id=${resultId}&season_number=${seasonNumber}&episode_number=${episodeNumber}`);
+            const parsedResponse = response.json();
+            return parsedResponse;
+        } catch (error) {
+            console.error("There was an error fetching the episode:", error);
+        }
     }
 
-    const getEpisodeByIdFromLocalDB = (episodeId) => {
-        return fetch(`${url}/episodes/${episodeId}`).then((res) => res.json());
+    const getEpisodeByIdFromLocalDB = async (episodeId) => {
+        try {
+            const response = await fetch(`${url}/episodes/${episodeId}`);
+            const parsedResponse = response.json();
+            return parsedResponse;
+        } catch (error) {
+            console.error("There was an error fetching the episode:", error);
+        }
     }
 
     return (
