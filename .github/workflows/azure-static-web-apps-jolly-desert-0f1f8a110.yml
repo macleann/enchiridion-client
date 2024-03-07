@@ -20,6 +20,11 @@ jobs:
         with:
           build: npm run build
           start: npm start
+          component: true
+        env:
+          CYPRESS_REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
+          CYPRESS_REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
+          CYPRESS_REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
