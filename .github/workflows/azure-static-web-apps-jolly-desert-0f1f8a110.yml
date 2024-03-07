@@ -22,10 +22,7 @@ jobs:
           start: npm start
           component: true
           working-directory: the-enchiridion
-        env:
-          CYPRESS_REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
-          CYPRESS_REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
-          CYPRESS_REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
+          env: REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }},REACT_APP_API_URL=${{ secrets.CYPRESS_REACT_APP_API_URL }},REACT_APP_URL=${{ secrets.CYPRESS_REACT_APP_URL }}
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
