@@ -1,17 +1,14 @@
 name: Azure Static Web Apps CI/CD
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
     branches:
       - prod
 
 jobs:
   cypress-tests:
     runs-on: ubuntu-22.04
-    env:
-      REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
-      REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
-      REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +18,10 @@ jobs:
           node-version: 14
       - name: Install dependencies and build
         working-directory: the-enchiridion
+        env:
+          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
+          REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
+          REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
         run: |
           npm ci
           npm run build
