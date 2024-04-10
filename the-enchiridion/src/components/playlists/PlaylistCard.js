@@ -62,7 +62,7 @@ export const PlaylistCard = ({ playlist }) => {
       </div>
       <Link to={`/playlists/${playlist.id}`}>
         <div className="my-3">{playlistImage}</div>
-        <div>
+        <div className="mb-6">
           <div id="playlist-title" className="my-2 text-lg md:text-xl text-center">{playlist.name}</div>
           {isMobile ? null : (
             <div className="mx-4 my-2 text-center text-gray-500">
