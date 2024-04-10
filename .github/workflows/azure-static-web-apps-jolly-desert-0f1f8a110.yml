@@ -19,9 +19,9 @@ jobs:
       - name: Install dependencies and build
         working-directory: the-enchiridion
         env:
-          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
-          REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
-          REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
+          REACT_APP_GOOGLE_CLIENT_ID: 115078931939-eoj0gcm7iail2dfu94b02nsuh9gffm7o.apps.googleusercontent.com
+          REACT_APP_API_URL: https://api.enchiridion.tv
+          REACT_APP_URL: https://enchiridion.tv
         run: |
           npm install
           npm run build
@@ -34,10 +34,13 @@ jobs:
       - name: Cypress run
         working-directory: the-enchiridion
         env:
-          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.CYPRESS_REACT_APP_GOOGLE_CLIENT_ID }}
-          REACT_APP_API_URL: ${{ secrets.CYPRESS_REACT_APP_API_URL }}
-          REACT_APP_URL: ${{ secrets.CYPRESS_REACT_APP_URL }}
+          REACT_APP_GOOGLE_CLIENT_ID: 115078931939-eoj0gcm7iail2dfu94b02nsuh9gffm7o.apps.googleusercontent.com
+          REACT_APP_API_URL: https://api.enchiridion.tv
+          REACT_APP_URL: https://enchiridion.tv
         run: |
+          REACT_APP_GOOGLE_CLIENT_ID: 115078931939-eoj0gcm7iail2dfu94b02nsuh9gffm7o.apps.googleusercontent.com
+          REACT_APP_API_URL: https://api.enchiridion.tv
+          REACT_APP_URL: https://enchiridion.tv
           npx cypress run --component
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
