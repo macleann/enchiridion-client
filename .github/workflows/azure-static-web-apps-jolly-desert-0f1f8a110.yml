@@ -25,12 +25,6 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Debug
-        run: |
-          echo "Environment Variables:"
-          printenv
-          echo "package.json:"
-          cat package.json
       - name: Cypress run
         working-directory: the-enchiridion
         env:
@@ -38,9 +32,6 @@ jobs:
           REACT_APP_API_URL: https://api.enchiridion.tv
           REACT_APP_URL: https://enchiridion.tv
         run: |
-          REACT_APP_GOOGLE_CLIENT_ID: 115078931939-eoj0gcm7iail2dfu94b02nsuh9gffm7o.apps.googleusercontent.com
-          REACT_APP_API_URL: https://api.enchiridion.tv
-          REACT_APP_URL: https://enchiridion.tv
           npx cypress run --component
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
