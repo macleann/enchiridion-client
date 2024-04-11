@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {},
   },
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   plugins: [require("daisyui")],
   daisyui: {
     themes: ["lofi", "dim"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
@@ -19,4 +20,3 @@ module.exports = {
     themeRoot: ":root", // The element that receives theme color CSS variables
   },
 }
-
