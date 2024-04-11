@@ -4,6 +4,7 @@ import { PlaylistContext } from "../../providers/PlaylistProvider.js";
 import { PlaylistCard } from "../playlists/PlaylistCard";
 import { Loading } from "../svgs/Loading.js";
 import { trigger } from "../../redux/actions/utilityActions.js";
+import { Hero } from "./hero/Hero.js";
 
 export const Home = () => {
   const { playlists, setPlaylists, getAllPlaylists, getTrendingPlaylists } =
@@ -41,6 +42,7 @@ export const Home = () => {
   return (
     <>
       <div className="flex flex-col">
+        <Hero />
         <h2 className="mt-8 ml-12 text-2xl">Trending Playlists</h2>
         <div className="scrolling-wrapper">
           {trendingPlaylists.map((playlist) => (
