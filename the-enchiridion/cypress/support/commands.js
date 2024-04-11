@@ -20,6 +20,11 @@ Cypress.Commands.add('login', (id) => {
     store.dispatch(setLoggedIn(true));
     store.dispatch(setUserData({ id: id }));
   });
+
+Cypress.Commands.add('logout', () => {
+  store.dispatch(setLoggedIn(false));
+  store.dispatch(setUserData({}));
+});
 //
 //
 // -- This is a child command --
